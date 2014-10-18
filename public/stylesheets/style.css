@@ -6,3 +6,23 @@ body {
 a {
   color: #00B7FF;
 }
+
+div.main {
+    margin: auto;
+    width: 980px;
+}
+
+table.list{
+    width: 100%;
+    border: 1px solid #d1a616;
+    box-shadow: 10px 10px 5px #888888;
+    border-collapse: collapse;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    
+}
+
+table.list td{
+    border: 1px solid #dddddd;
+    text-align: center;
+}
