@@ -3,8 +3,8 @@ var router = express.Router();
 var config = require('../config');
 
 /* GET home page. */
-router.get('/', function(req, res) {
-  res.render('dashboard', { title: 'Express' });
+router.get('/example', function(req, res) {
+  res.render('example', { title: 'examples' });
 });
 
 module.exports = router;
