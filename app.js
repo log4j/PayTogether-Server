@@ -67,4 +67,7 @@ _.extend(app.locals, {
 });
 
 
+_.extend(app.locals, require('./common/render_helpers'));
+
+
 module.exports = app;
