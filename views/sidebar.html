@@ -9,11 +9,7 @@
             </ul>
             <!-- /Page refresh -->
 
-            <!-- Search -->
-            <div class="search" id="main-search">
-              <i class="fa fa-search"></i> <input type="text" placeholder="Search...">
-            </div>
-            <!-- Search end -->
+            
 
             <!-- Quick Actions -->
             <ul class="nav navbar-nav quick-actions">
@@ -234,7 +230,7 @@
 
               <li class="dropdown divided user" id="current-user">
                 <div class="profile-photo">
-                  <img src="assets/images/profile-photo.jpg" alt />
+                  <img src="<%- staticFile('assets/images/profile-photo.jpg') %>" alt />
                 </div>
                 <a class="dropdown-toggle options" data-toggle="dropdown" href="#">
                   John Douey <i class="fa fa-caret-down"></i>
@@ -322,14 +318,14 @@
                   
                   <li class="active">
                     <a href="index.html">
-                      <i class="fa fa-tachometer"></i> Group
+                      <i class="fa fa-tachometer"></i> Dashboard
                       <span class="badge badge-red">1</span>
                     </a>
                   </li>
 
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      <i class="fa fa-list"></i> Forms <b class="fa fa-plus dropdown-plus"></b>
+                      <i class="fa fa-list"></i> My Group <b class="fa fa-plus dropdown-plus"></b>
                     </a>
                     <ul class="dropdown-menu">
                       <li>
@@ -352,7 +348,8 @@
 
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      <i class="fa fa-pencil"></i> Interface <b class="fa fa-plus dropdown-plus"></b>
+                      <i class="fa fa-pencil"></i> Message <b class="fa fa-plus dropdown-plus"></b>
+                      <span class="label label-greensea">mails</span>
                     </a>
                     <ul class="dropdown-menu">
                       <li>
@@ -381,141 +378,12 @@
 
                   <li>
                     <a href="buttons.html">
-                      <i class="fa fa-tint"></i> Buttons & Icons
+                      <i class="fa fa-tint"></i> Profile
                     </a>
                   </li>
-                  <li>
-                    <a href="grid.html">
-                      <i class="fa fa-th"></i> Grid Layout
-                    </a>
-                  </li>
+ 
 
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      <i class="fa fa-th-large"></i> Tables <b class="fa fa-plus dropdown-plus"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li>
-                        <a href="tables.html">
-                          <i class="fa fa-caret-right"></i> Bootstrap Tables
-                        </a>
-                      </li>
-                      <li>
-                        <a href="datatables.html">
-                          <i class="fa fa-caret-right"></i> DataTables
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
 
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      <i class="fa fa-desktop"></i> Example Pages <b class="fa fa-plus dropdown-plus"></b>
-                      <span class="label label-greensea">mails</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li>
-                        <a href="login.html">
-                          <i class="fa fa-caret-right"></i> Login Page
-                        </a>
-                      </li>
-                      <li>
-                        <a href="calendar.html">
-                          <i class="fa fa-caret-right"></i> Calendar
-                        </a>
-                      </li>
-                      <li>
-                        <a href="page404.html">
-                          <i class="fa fa-caret-right"></i> Page 404
-                        </a>
-                      </li>
-                      <li>
-                        <a href="page500.html">
-                          <i class="fa fa-caret-right"></i> Page 500
-                        </a>
-                      </li>
-                      <li>
-                        <a href="page-offline.html">
-                          <i class="fa fa-caret-right"></i> Page Offline
-                        </a>
-                      </li>
-                      <li>
-                        <a href="locked-screen.html">
-                          <i class="fa fa-caret-right"></i> Locked Screen
-                          <span class="label label-greensea">new</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="gallery.html">
-                          <i class="fa fa-caret-right"></i> Gallery
-                        </a>
-                      </li>
-                      <li>
-                        <a href="timeline.html">
-                          <i class="fa fa-caret-right"></i> Timeline
-                        </a>
-                      </li>
-                      <li>
-                        <a href="chat.html">
-                          <i class="fa fa-caret-right"></i> Chat
-                          <span class="label label-greensea">new</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="search-results.html">
-                          <i class="fa fa-caret-right"></i> Search Results
-                          <span class="label label-greensea">new</span>
-                        </a>
-                      </li>
-                      <li>
-                      <li>
-                        <a href="profile-page.html">
-                          <i class="fa fa-caret-right"></i> Profile Page
-                          <span class="label label-greensea">new</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="weather-page.html">
-                          <i class="fa fa-caret-right"></i> Weather Page
-                          <span class="label label-greensea">new</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="mail.html">
-                          <i class="fa fa-caret-right"></i> Vertical Mail
-                          <span class="badge badge-red">5</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="mail-horizontal.html">
-                          <i class="fa fa-caret-right"></i> Horizontal Mail
-                          <span class="label label-greensea">mails</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a href="vector-maps.html">
-                          <i class="fa fa-caret-right"></i> Vector Maps
-                        </a>
-                      </li>
-                      <li>
-                        <a href="google-maps.html">
-                          <i class="fa fa-caret-right"></i> Google Maps
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-
-                  <li>
-                    <a href="widgets.html">
-                      <i class="fa fa-play-circle"></i> Widgets
-                    </a>
-                  </li>
-
-                  <li>
-                    <a href="charts.html">
-                      <i class="fa fa-bar-chart-o"></i> Charts & Graphs
-                    </a>
-                  </li>
 
 
                 </ul>
