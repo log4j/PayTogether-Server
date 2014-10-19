@@ -19,7 +19,7 @@ var routes = require('./routes');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
 app.engine('html', require('ejs-mate'));
-app.locals._layoutFile = 'layout.html';
+//app.locals._layoutFile = 'layout.html';
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -34,12 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 routes(app);
 
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
+
 
 // error handlers
 
@@ -64,6 +59,15 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    res.render('page404',{title:'fuck',layout:false});
+    //next(err);
+});
+
 
 // set static, dynamic helpers
 _.extend(app.locals, {
