@@ -7,7 +7,10 @@ var passport = require('passport');
 
 module.exports = function (app) {
 
-	console.log('routes!!');
+	//console.log('routes!!');
+
+
+	app.use(home.websiteFilter);
 
 	//show login
 	app.get('/login', sign.showLogin);
@@ -16,10 +19,14 @@ module.exports = function (app) {
 		passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }),
 		function(req, res){
 			res.redirect('/dashboard');
-		});
+		}
+		);
+	app.get('/logout', sign.logout);
+
 
 	// home page
-	app.get('/dashboard', home.dashboard);
+	app.get('/', home.home);
+	app.get('/dashboard', sign.ensureAuthenticated,home.dashboard);
 	// sitemap
 	//app.get('/sitemap.xml', site.sitemap);
 

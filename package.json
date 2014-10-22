@@ -23,6 +23,7 @@
     "passport-local": "*",
     "connect-flash": "*",
     "express-session": "^1.0.4",
-    "connect-mongo": "^0.4.1"
+    "connect-mongo": "^0.4.1",
+    "utility": "1.0.0"
   }
 }
