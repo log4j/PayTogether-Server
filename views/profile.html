@@ -1,0 +1,282 @@
+<% layout('layout') -%>
+
+<!-- Page content -->
+        <div id="content" class="col-md-12">
+
+          <!-- page header -->
+          <div class="pageheader">
+            
+
+            <h2><i class="fa fa-tachometer"></i> Profile
+            <span><%=current_user.name%></%></span></h2>
+            
+
+            <div class="breadcrumbs">
+              <ol class="breadcrumb">
+                <li>You are here</li>
+                <li><a href="/">Pay Together</a></li>
+                <li class="active">Group Summary</li>
+              </ol>
+            </div>
+
+
+          </div>
+          <!-- /page header -->
+
+          <!-- content main container -->
+          <div class="main">
+
+
+
+            <!-- cards 
+            <%- partial('./_grouplist') %>
+             /cards -->
+            
+            
+
+
+
+            <!-- row -->
+            <div class="row">
+
+                
+                <div class="col-md-12" style="display:none">
+                
+                <section class="tile transparent recent-activity">
+
+
+
+
+                  <!-- tile header -->
+                  <div class="tile-header transparent">               
+                    <h1><strong>Recent</strong> Activity</h1>
+                  </div>
+                  <!-- /tile header -->
+
+
+                  <!-- /tile body -->
+                
+                </section>
+                    
+                </div>
+              <!-- col 6 -->
+              <div class="col-md-4">
+
+                <section class="tile transparent">
+
+                  <!-- tile header -->
+                  <div class="tile-header nopadding">               
+                    
+                  </div>
+                  <!-- /tile header -->
+
+                  <!-- tile widget -->
+                  <div class="tile-widget color transparent-white rounded-top-corners">
+                    
+                    <div class="user-card">
+                      <h3><strong><%=current_user.name%></strong></h3>
+                      <ul class="profile-controls inline">
+                        <li class="mailto"><a href="#"><i class="fa fa-envelope"></i> Send Email</a></li>
+                        <li class="avatar"><img src="/assets/avatars/<%=current_user.avatar%>" alt="" class="img-circle profile-photo"></li>
+                        <li class="callto" id="make-call">
+                          <a href="#">
+                            <span class="call">Call <i class="fa fa-phone"></i></span>
+                            <span class="calling">Calling... <i class="fa fa-microphone"></i></span>
+                          </a>
+                        </li>
+                      </ul>
+                      
+                    </div>                       
+                  </div>
+                  <!-- /tile widget -->
+
+                  <!-- tile body -->
+                  <div class="tile-body color transparent-black textured rounded-bottom-corners">
+                    <ul class="inline divided social-feed">
+                      <li>
+                        <h4>126</h4>
+                        Groups
+                      </li>
+                      <li>
+                        <h4>324</h4>
+                        Pay Amount
+                      </li>
+                      <li>
+                        <h4>1254</h4>
+                        Group Pay
+                      </li>
+                    </ul>
+                  </div>
+                  <!-- /tile body -->
+                
+
+
+                </section>
+                <!-- tile -->
+                
+        
+                <!-- /tile -->
+              </div>
+              <!-- /col 6 -->
+                  
+                  
+                  
+                  
+                  <div class="col-md-8">
+              
+
+                
+                <!-- tile -->
+                <section class="tile transparent">
+
+                  <!-- tile widget -->
+                  <div class="tile-widget nopadding color transparent-black rounded-top-corners">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs tabdrop">
+                      <li class="active"><a href="#settings-tab" data-toggle="tab">Settings</a></li>
+                    </ul>
+                    <!-- / Nav tabs -->
+                  </div>
+                  <!-- /tile widget -->
+
+                  <!-- tile body -->
+                  <div class="tile-body tab-content rounded-bottom-corners">
+
+                    <!-- Tab panes -->                 
+
+
+                    <div id="settings-tab" class="tab-pane fade active in">
+                      
+
+                      <form class="profile-settings">
+                        
+                        <div class="row">
+                          <div class="form-group col-md-12 legend">
+                            <h4><strong>Personal</strong> Settings</h4>
+                            <p>Your personal account settings</p>
+                          </div>
+                        </div>
+
+                        <div class="row">
+
+                          <div class="form-group col-sm-6">
+                            <label for="first-name">Login Name</label>
+                            <input type="text" class="form-control"  value="<%=current_user.loginname%>" disabled>
+                          </div>
+
+                          <div class="form-group col-sm-6">
+                            <label for="last-name">Nick Name</label>
+                            <input type="text" class="form-control" id="last-name" value="<%=current_user.name%>">
+                          </div>
+
+                        </div>
+
+                        
+
+                        <div class="row">
+
+                          <div class="form-group col-sm-6">
+                            <label for="email">E-mail</label>
+                            <input type="email" class="form-control" id="email" value="<%=current_user.email%>" readonly="">
+                          </div>
+
+
+                          <div class="form-group col-sm-6">
+                            <label for="avatar">Avatar</label>
+                            <div class="input-group">
+                              <span class="input-group-btn">
+                                <span class="btn btn-primary btn-file">
+                                  <i class="fa fa-upload"></i><input type="file" multiple="">
+                                </span>
+                              </span>
+                              <input type="text" class="form-control" readonly="" id="avatar">
+                            </div>
+                            <span class="help-block">Allowed files: gif, png, jpg. Max file size 1Mb</span>
+                          </div>
+
+                        </div>
+
+
+                        <div class="row">
+                          <div class="form-group col-md-12 legend">
+                            <h4><strong>Security</strong> Settings</h4>
+                            <p>Secure your account</p>
+                          </div>
+                        </div>
+
+                        <div class="row">
+
+                          <div class="form-group col-sm-6">
+                            <label for="username">Login Name</label>
+                            <input type="text" class="form-control" id="username" value="<%=current_user.loginname%>" readonly="">
+                          </div>
+
+
+                          <div class="form-group col-sm-6">
+                            <label for="password">Current Password</label>
+                            <input type="password" class="form-control" id="password" value="" >
+                          </div>
+
+                        </div>
+
+                        <div class="row">
+
+                          <div class="form-group col-sm-6">
+                            <label for="new-password">New Password</label>
+                            <input type="password" class="form-control" id="new-password">
+                          </div>
+
+                          <div class="form-group col-sm-6">
+                            <label for="new-password-repeat">New Password Repeat</label>
+                            <input type="password" class="form-control" id="new-password-repeat">
+                          </div>
+
+                        </div>
+
+                        <div class="row">
+
+                          <div class="form-group col-sm-6">
+                              
+                            </div>
+                          </div>
+
+                      </form>
+                    
+
+                    </div>
+                    <!-- / Tab panes -->
+
+                  </div>
+                  <!-- /tile body -->
+                
+
+
+                </section>
+                <!-- /tile -->
+                
+
+
+              </div>
+                  
+                  
+            </div>
+            <!-- /row -->  
+          </div>
+          <!-- /content container -->
+        </div>
+        <!-- Page content end -->
+
+
+
+        <script>
+    $(function(){
+
+      // Initialize card flip
+
+      
+        $(".tooltip-img").tooltip();
+
+      
+    })
+      
+    </script>

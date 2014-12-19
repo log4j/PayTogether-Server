@@ -6,16 +6,22 @@ var widthLess1024 = function(){
   
   if ($(window).width() < 1024) {
     //make sidebar collapsed
-    $('#sidebar, #navbar').addClass('collapsed');
+    //$('#sidebar, #navbar').addClass('collapsed');
     $('#navigation').find('.dropdown.open').removeClass('open');
     $('#navigation').find('.dropdown-menu.animated').removeClass('animated');
 
     //move content if navigation is collapsed
+      
+      /**
+       * disabled by yangmang
+        
     if ($('#sidebar').hasClass('collapsed')) {
       $('#content').animate({left: "0px",paddingLeft: "55px"},150);
     } else {
       $('#content').animate({paddingLeft: "55px"},150);
     };
+    
+    */
   }
 
   else {
@@ -23,11 +29,15 @@ var widthLess1024 = function(){
     $('#sidebar, #navbar').removeClass('collapsed');
 
     //move content if navigation is not collapsed
+      /**
+       * disabled by yangmang
+       *
     if ($('#sidebar').hasClass('collapsed')) {
       $('#content').animate({left: "210px",paddingLeft: "265px"},150);
     } else {
       $('#content').animate({paddingLeft: "265px"},150);
     };
+    */
   }  
 
 };
@@ -63,11 +73,7 @@ $(function(){
   /* INITIALIZE MMENU */
   /********************/
 
-	$("#mmenu").mmenu({
-    position: "right",
-    zposition: 'next',
-    moveBackground: false
-  });
+	
 
 	/************************************************/
   /* ADD ANIMATION TO TOP MENU & SUBMENU DROPDOWN */
@@ -147,21 +153,6 @@ $(function(){
     railpadding: {top:0,right:2,left:2,bottom:0}
   });
 
-  $('#mmenu').on(
-    "opened.mm",
-    function()
-    {
-    	$("#content").getNiceScroll().hide();
-    }
-   );
-
-  $('#mmenu').on(
-    "closed.mm",
-    function()
-    {
-    	$("#content").getNiceScroll().show();
-    }
-   );
 
 	/************************************/
 	/* SIDEBAR MENU DROPDOWNS FUNCTIONS */
@@ -198,7 +189,9 @@ $(function(){
 	/*******************************/
   /* SIDEBAR COLLAPSING FUNCTION */
   /*******************************/
-
+    /*
+    disabled by yangmang
+    
   $('.sidebar-collapse a').on('click', function(){
     // Add or remove class collapsed
     $('#sidebar, #navbar').toggleClass('collapsed');
@@ -230,6 +223,7 @@ $(function(){
     }
 
   });
+  */
 
   /**************************/
   /* SIDEBAR CLASS TOGGLING */
@@ -268,7 +262,7 @@ $(function(){
     var value = $(this).data('value');
     var duration = $(this).data('animation-duration');
    
-    $(this).animateNumbers(value, true, duration, "linear");
+    $(this).animateNumbers(parseFloat(value).toFixed(2), true, duration, "linear", "$");
   });
    
   //animate progress bars
@@ -293,35 +287,7 @@ $(function(){
   /* VIDEO BACKGROUND INITIALIZE */
   /*******************************/
 
-  var loadVideoBg = function(){
-    $('body .videocontent').prepend('<div class="video-background"></div>');
-      
-    $('.video-background').videobackground({
-      videoSource: [['http://tattek.com/minimal/assets/videos/videobg.mp4', 'video/mp4'],
-        ['http://tattek.com/minimal/assets/videos/videobg.webm', 'video/webm'],
-        ['http://tattek.com/minimal/assets/videos/videobg.ogv', 'video/ogg']], 
-      controlPosition: '#video',
-      poster: 'assets/images/video.jpg',
-      loop: true,
-      controlText: '',
-      resizeTo: 'window',
-      loadedCallback: function() {
-        $(this).videobackground('mute');
-      }
-    });
-  }
 
-  if ($('#videobg-check').is(':checked')) { 
-    loadVideoBg();
-  }
-
-  $('#videobg-check').change(function() {
-    if ($(this).is(":checked")) {
-      loadVideoBg();
-    } else {
-      $('#video').html('');
-    }    
-  });
 
   /*************************/
   /* page refresh function */
@@ -403,8 +369,8 @@ $(function(){
 /* page preloader */
 /******************/
 $(window).load(function() { 
-  $("#loader").delay(500).fadeOut(300); 
-  $(".mask").delay(800).fadeOut(300, function(){
+  $("#loader").delay(800).fadeOut(400); 
+  $(".mask").delay(800).fadeOut(400, function(){
     widthLess1024();
     widthLess768();
   });

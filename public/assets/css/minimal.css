@@ -209,10 +209,12 @@ body .navbar {
       font-family: "Roboto Condensed", sans-serif;
       color: white;
       padding: 0;
-      padding-left: 30px;
+      padding-left: 38px;
       height: 45px;
       line-height: 45px;
-      background: url(../images/minimal-logo.png) no-repeat 0 5px; }
+      background: url(../images/minimal-logo.png) no-repeat 0 5px; 
+      background-size: 36px;
+    }
       body .navbar .navbar-header .navbar-brand img {
         vertical-align: top; }
     body .navbar .navbar-header .sidebar-collapse {
@@ -266,7 +268,7 @@ body .navbar {
       overflow: hidden;
       margin-left: 15px; }
       body .navbar .navbar-nav.quick-actions .user .profile-photo img {
-        width: 100%; }
+        width: 80%;margin:10%; }
     body .navbar .navbar-nav.quick-actions .user > a {
       font-size: 12px; }
       body .navbar .navbar-nav.quick-actions .user > a > i {
@@ -14796,7 +14798,7 @@ body #content .feed-list {
       width: 120px; }
     body .navbar .navbar-nav.quick-actions {
       position: absolute;
-      right: -260px;
+      right: 0px;
       top: 0; }
     body .navbar.collapsed .navbar-nav.quick-actions {
       right: 0; }
@@ -15176,3 +15178,151 @@ body #content .feed-list {
     body #content.full-page.weather .owl-carousel .slide .inside-block {
       width: 100%;
       padding-top: 200px; } }
+
+
+
+.two-item a{
+    width:50%;
+    float:left;
+}
+
+.three-item a{
+    width:33%;
+    float:left;
+}
+
+
+.member-list {
+    margin-bottom: 5px;
+}
+
+.member-list img{
+    height:32px;
+    margin: -5px;
+    margin-right: 15px;
+}
+
+.member-list a{
+    float:right;
+    margin-right: 3px;
+}
+
+h2.media-heading {
+    display:table-caption;
+}
+
+.choose-member div.radio{
+    padding-left: 10px;
+}
+
+.choose-member div.checkbox{
+    padding-top:0px;
+    padding-left:20px;
+}
+
+.opacity50{
+    opacity: 0.5;
+}
+
+.member-item label img{
+    width:24px;
+    margin-right: 5px;
+    margin-top: -4px;
+}
+
+.transfer-to img{
+    width:19px;
+    line-height: 19px;
+    margin-right: 5px;
+    margin-top: -4px;
+}
+
+.transfer-to div.radio {
+    padding-left: 3px;
+}
+.transfer-to ul{
+    margin-bottom: 48px;
+}
+.transfer-to ul li{
+
+}
+.transfer-to ul li div{
+    height: 100%;
+}
+.transfer-to ul label{
+    width: 100%;
+    margin:0px;
+    display: inline-block;
+
+}
+.transfer-to .panel-heading{
+    padding-left:10px !important;
+}
+
+.transfer-to .panel-body{
+    padding: 10px;
+}
+
+.solution{
+    padding-left: 0px;
+}
+.solution li{
+    list-style: none;
+    padding: 0px;
+    margin: 1px 0 0 0;
+    
+    border: none;
+    
+}
+.solution li a{
+    display: block;
+    text-decoration: none;
+}
+
+.solution .notification {
+    margin: 0px;
+    padding: 3px 5px;
+}
+
+span.amount{
+    line-height: 35px;
+    display: list-item;
+    float: right;
+    color: #418bca;
+    font-weight: 500;
+    padding-right: 5px;
+}
+
+#wrap #content{
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    
+}
+
+body{
+    
+    margin: auto;
+}
+
+div.main, div.pageheader{
+    max-width: 1024px;
+    margin: auto !important;
+}
+
+.menu-item{
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+    font-weight: 400;
+    color: white;
+    padding: 3px 5px;
+    margin: 0 2px;
+    background-color: rgba(0, 0, 0, 0);
+    color: rgba(255, 255, 255, 0.65);
+    font-family: "Roboto Slab", serif, FontAwesome ;
+}
+.menu-item:hover{
+    background-color: rgba(0, 0, 0, 0);
+    color: rgba(255, 255, 255, 0.95);
+}

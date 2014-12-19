@@ -1,0 +1,64 @@
+<% layout('layout') -%>
+
+<!-- Page content -->
+        <div id="content" class="col-md-12">
+
+          <!-- page header -->
+          <div class="pageheader">
+
+            <h2><i class="fa fa-tachometer"></i> Group
+            <span></span></h2>
+            
+
+            <div class="breadcrumbs">
+              <ol class="breadcrumb">
+                <li>You are here</li>
+                <li><a href="index.html">Minimal</a></li>
+                <li class="active">Group</li>
+              </ol>
+            </div>
+
+
+          </div>
+          <!-- /page header -->
+
+          <!-- content main container -->
+          <div class="main">
+
+
+
+            <!-- cards -->
+            <%- partial('./_grouplist') %>
+            <!-- /cards -->
+            
+
+
+          </div>
+          <!-- /content container -->
+
+
+
+
+
+
+        </div>
+        <!-- Page content end -->
+
+
+
+        <script>
+    $(function(){
+
+      // Initialize card flip
+      $('.card.hover').hover(function(){
+        $(this).addClass('flip');
+      },function(){
+        $(this).removeClass('flip');
+      });
+
+      
+
+      
+    })
+      
+    </script>

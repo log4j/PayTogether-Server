@@ -1,0 +1,407 @@
+<% layout( 'layout') -%>
+
+    <!-- Page content -->
+    <div id="content" class="col-md-12">
+
+        <!-- page header -->
+        <div class="pageheader">
+
+
+            <h2><i class="fa fa-tachometer"></i> Create A Group
+            <span>Set your group profile</span></h2>
+
+
+            <div class="breadcrumbs">
+                <ol class="breadcrumb">
+                    <li>You are here</li>
+                    <li><a href="index.html">Minimal</a>
+                    </li>
+                    <li class="active">Create A Group</li>
+                </ol>
+            </div>
+
+
+        </div>
+        <!-- /page header -->
+
+        <!-- content main container -->
+        <div class="main">
+
+
+
+
+            <!-- row -->
+            <div class="row">
+
+
+
+
+                <!-- col 6 -->
+                <div class="col-md-11">
+
+                    <!-- tile -->
+                    <section class="tile color transparent-white">
+
+                        <!-- tile header -->
+                        <div class="tile-header">
+                            <h1><strong>Group</strong> Information</h1>
+                            <div class="controls">
+                                <a href="#" class="minimize"><i class="fa fa-chevron-down"></i></a>
+                                <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
+                                <a href="#" class="remove"><i class="fa fa-times"></i></a>
+                            </div>
+                        </div>
+                        <!-- /tile header -->
+
+                        <!-- tile body -->
+                        <div class="tile-body">
+
+                            <form class="form-horizontal" role="form" action="/creategroup" method="POST">
+
+                                <div class="form-group">
+                                    <label for="input07" class="col-sm-4 control-label">Group Name</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-slategray"><i class="fa fa-users"></i></span>
+                                            <input type="text" class="form-control" name="name" 
+                                                   placeholder="Choose a name to identify your group" 
+                                                   value="<%=group?group.name:''%>">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="input08" class="col-sm-4 control-label">Group Type</label>
+                                    <div class="col-sm-8">
+                                        <div id="owl-example" class="owl-carousel">
+                                            <% for(var i=0;i<config.typeIconList.length;i++){ %>
+                                            <div class="text-center">
+                                                <h3><%=config.typeNameList[i]%></h3>
+                                                <i class="fa <%=config.typeIconList[i]%> fa-4x"></i>
+                                            </div>
+                                            <%}%>
+                                        
+
+                                        </div>
+
+                                    </div>
+                                    <input type="hidden" name="type" id="type" />
+                                </div>
+
+
+
+
+
+
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Panel Color</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-slategray"><i class="fa fa-eyedropper "></i></span>
+                                            <input type="text" class="form-control" id="color" name="color" readonly="">
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-greensea dropdown-toggle" data-toggle="dropdown"><i class="fa fa-tint"></i>
+                                                </button>
+                                                <ul class="dropdown-menu pull-right">
+                                                    <li>
+                                                        <div id="event-colorpalette" data-return-color="#color"></div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <!-- /btn-group -->
+                                        </div>
+                                        <!-- /input-group -->
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="input07" class="col-sm-4 control-label">Expected Cost / Person</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-slategray"><i class="fa fa-calculator "></i></span>
+                                            <input type="text" class="form-control" name="amount" 
+                                                   placeholder="Set an expected value per person"
+                                                   value="<%=group?group.expected_amount:''%>"
+                                                   >
+                                            <span class="input-group-addon">$</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="input07" class="col-sm-4 control-label">Members</label>
+                                    <div class="col-sm-8">
+                                        <div id="<%=current_user.id%>" class="well well-sm well-slategray member-list">
+                                            <img src="/assets/avatars/<%=current_user.avatar%>" />
+                                            <%=current_user.name%>
+                                        </div>
+
+
+                                        <div class="input-group" id="add-div">
+                                            <span class="input-group-addon addon-slategray"><i class="fa fa-plus-square-o"></i></span>
+                                            <input type="text" class="form-control" id="add-member-key" placeholder="Add member by name">
+                                            <span class="input-group-btn">
+                                <button class="btn btn-green" id="add-member-btn" type="button">Add Member</button>
+                                </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="form-group form-footer footer-white">
+                                    <div class="col-sm-offset-4 col-sm-8">
+                                        <input type='hidden' id='members-input' name='members'/>
+                                        <% if(group){%>
+                                        <input type='hidden' name='groupid' value="<%=group._id%>">
+                                        <% } %>    
+                                        
+                                        <button type="submit" id="submit-btn" class="btn btn-greensea">Submit</button>
+                                        <button type="reset" class="btn btn-red">Reset</button>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                        <!-- /tile body -->
+
+
+                    </section>
+                    <!-- /tile -->
+
+
+                </div>
+                <!-- /col 6 -->
+
+
+            </div>
+            <!-- /row -->
+
+
+        </div>
+        <!-- /content container -->
+
+
+    </div>
+    <!-- Page content end -->
+
+
+    <link rel="stylesheet" href="/assets/js/vendor/colorpalette/bootstrap-colorpalette.css"></link>
+    <link rel="stylesheet" href="/assets/js/vendor/owl-carousel/css/owl.carousel.css">
+    <link rel="stylesheet" href="/assets/js/vendor/owl-carousel/css/owl.theme.css">
+
+
+    <script type="text/javascript" src="/assets/js/vendor/colorpalette/bootstrap-colorpalette.js"></script>
+    <script src="/assets/js/vendor/owl-carousel/owl.carousel.min.js"></script>
+
+
+    <script>
+        $(function () {
+
+            var colorName = [];
+            colorName['#ff4a43'] = 'red';
+            colorName['#22beef'] = 'cyan';
+            colorName['#a2d200'] = 'green';
+            colorName['#ffc100'] = 'orange';
+            colorName['#cd97eb'] = 'amethyst';
+
+            colorName['#16a085'] = 'greensea';
+            colorName['#a40778'] = 'drank';
+            colorName['#1693a5'] = 'dutch';
+            colorName['#ff0066'] = 'hotpink';
+            colorName['#d9544f'] = 'redbrown';
+            colorName['#3f4e62'] = 'slategray';
+
+
+            var colors = ['#ff4a43', '#22beef', '#a2d200', '#ffc100', '#cd97eb',
+                 '#16a085', '#ff0066', '#a40778', '#1693A5', '#d9544f', '#3f4e62'];
+
+            var randomColor = function () {
+                var index = parseInt(Math.random() * 11);
+                $("#color").css("background-color", colors[index]);
+                $("#color").val(colorName[colors[index]]);
+            };
+            
+            var setColor = function (name){
+                var colorId = '';
+                for(var key in colorName){
+                    if(colorName[key]==name){
+                        colorId = key;
+                        break;
+                    }
+                }
+                $("#color").css("background-color", key);
+                $("#color").val(name);
+            };
+            
+            
+
+            // Initialize card flip
+            $('#event-colorpalette').colorPalette({
+                colors: [colors]
+            }).on('selectColor', function (e) {
+                var data = $(this).data();
+                $("#color").css("background-color", e.color);
+                $(data.returnColor).val(colorName[e.color]);
+                $(this).parents(".input-group").css("border-bottom-color", e.color);
+            });
+
+
+            <% if(group) {%>
+                setColor('<%=group.card_color%>');
+            <% }else{ %>
+                randomColor();
+            <% } %>
+
+                
+            var iconlist = [];
+            <% for(var i=0;i<config.typeIconList.length;i++){ %>
+            iconlist.push('<%=config.typeIconList[i]%>');
+            <% } %>
+                
+            var setType = function (name){
+                for(var i=0;i<iconlist.length;i++)
+                    if(iconlist[i]==name){
+                        $("#owl-example").data('owlCarousel').jumpTo(i);
+                        break;
+                    }
+            };
+                        
+                        
+            //owl carousel
+            $("#owl-example").owlCarousel({
+                singleItem: true,
+                pagination: false,
+                autoPlay: false,
+                navigation: true,
+                slideSpeed: 400,
+                paginationSpeed: 500,
+                navigationText: ['<i class="fa fa-4x fa-chevron-left"></i>', '<i class="fa fa-4x fa-chevron-right"></i>'],
+                afterAction: function () {
+                    //alert(this.owl.currentItem);
+                    $("#type").val(iconlist[this.owl.currentItem]);
+                }
+            });
+                     
+                     
+            var memberTemplate = $("#member-template").html();
+
+
+            $("#add-member-btn").click(function () {
+
+                $.getJSON('/getuserinfo', {
+                        name: $('#add-member-key').val()
+                    },
+                    addMember);
+                
+            });
+            
+            
+            var addMember = function(user){
+                //no resulf returned
+                if(user==null){
+                    alertError("User cannot found");
+                    return;
+                }
+                //alert(JSON.stringify(user));
+                //check if user is already been added
+                if($("#"+user._id).length){
+                    alertError("User already added");
+                    return;
+                }
+                //add div and bind event listener
+                var html = memberTemplate.replace('{id}', user._id).replace('{image}', '/assets/avatars/'+user.avatar)
+                            .replace('{name}', user.name);
+                $("#add-div").before(html);
+                
+                $(".check-toggler").last().click(function(){
+                    $(this).parent().remove();
+                });
+                $('#add-member-key').val('');
+                
+            };
+            
+            var alertError = function(msg){
+                var $in = $('#add-member-key');
+                $in.val($in.val()+'('+msg+')');
+                //form-control 
+                $in.addClass("parsley-error").addClass('parsley-validated');
+            };
+            
+            $("#add-member-key").focus(function(){
+                var $in = $('#add-member-key');
+                $in.removeClass('parsley-error').removeClass('parsley-validated');
+                $in.val($in.val().replace(/\([\w ]+\)/,''));
+            });
+            
+            
+            $("#add-member-key").keydown(function(e){
+                if(e.keyCode==13){
+                    $("#add-member-btn").trigger('click');
+                    $("#add-member-btn").focus();
+                    return false;
+                }
+            });
+             
+        
+            $("#submit-btn").click(function(){
+                var members = [];
+                var $list = $(".member-list");
+                for(var i=0;i<$list.length;i++){
+                    var id = $list.eq(i).attr('id');
+                    if(id&&id!=''){
+                        members.push(id);
+                    }
+                };
+                $("#members-input").val(JSON.stringify(members));
+                
+                //return false;
+            });
+
+                                                             
+            /**
+             * set a user as undeleted
+             */ 
+            var setUndeleted = function(id){
+                
+                $('#'+id).removeClass('well-cyan').addClass('well-slategray');
+                $('#'+id).find('a').remove();
+                
+            };
+                                                             
+            <% if(group){ %>
+                setType('<%=group.card_icon%>');
+                <% for(var i=0;i<group.userInfo.length;i++){ 
+                    var user = group.userInfo[i];
+                    if(user.id == current_user.id)
+                        continue;
+                    %>
+                    var userData = new Object();
+                    userData._id = '<%=user._id%>';
+                    userData.name = '<%=user.name%>';
+                    userData.avatar = '<%=user.avatar%>';
+                    addMember(userData);
+                <% } %>
+                <% for(var i=0;i<group.relatedUsers.length;i++){ 
+                    %>
+                    setUndeleted('<%=group.relatedUsers[i]%>');
+                <% } %>
+            <% } %>
+
+  
+        });
+    </script>
+
+    <script id="member-template" type="template">
+        <div class = "well well-sm well-cyan member-list"
+        id = "{id}" >
+            <img src = "{image}" /> 
+            {name} 
+            <a href = "javascript:;"
+        class = "check-toggler" > </a>
+        </div>
+    </script>

@@ -1,0 +1,47 @@
+<%
+   var isOwner = pay.from == current_user.id;
+   var groupInfo = null;
+   if(typeof(groupMap)!='undefined'){
+        groupInfo = groupMap[pay.group];
+   }
+%>
+<li>
+<span class="label label-<%=pay.isPay?'cyan':'success'%> w35" style="display:inline-block">
+  <%=pay.isPay?'Pay':'Trans'%></span>
+
+<img src="/assets/avatars/<%=pay.fromUser.avatar%>" class="w35" alt>
+<span class="user font-slab"><strong><%=pay.fromUser.name%></strong></span>
+
+<span class="subject">
+<%=pay.isPay?'paid':'transfered'%> 
+&nbsp;    
+<strong>$ <%=pay.amount.toFixed(2)%></%></strong>
+&nbsp;
+<%=pay.isPay?'for':'to'%>
+&nbsp;
+<% if(pay.toUser){
+    for(var j=0;j<pay.toUser.length;j++){
+    %>
+    <img src="/assets/avatars/<%=pay.toUser[j].avatar%>" class="w35 tooltip-img" title="<%=pay.toUser[j].name%>"
+         data-toggle="tooltip" data-placement="top" title="" data-original-title="Tooltip on top"
+         >
+    <%  
+    }
+   }else{ 
+    %><span class="label label-default">All Group</span><%
+    }
+   %>
+&nbsp;&nbsp;
+        <i class="fa fa-quote-left"></i>&nbsp;<%=pay.memo%>&nbsp;<i class="fa fa-quote-right"></i>
+</span>
+<span class="time">
+    <% if(groupInfo){
+       %>
+        <a href='/summary/<%=groupInfo.id%>' class="label label-<%=groupInfo.card_color%>"> 
+        <i class='fa fa-users'></i>
+        <%=groupInfo.name%>
+        </a>
+       <%}%>
+    &nbsp;&nbsp;
+    <i class="fa fa-clock-o"></i><%=pay.create_at.format('mm/dd/yyyy HH:MM:ss')%></span>
+</li>

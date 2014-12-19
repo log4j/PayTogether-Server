@@ -15,7 +15,7 @@
 ***********/
 
 (function($) {
-    $.fn.animateNumbers = function(stop, commas, duration, ease) {
+    $.fn.animateNumbers = function(stop, commas, duration, ease, prefix) {
         return this.each(function() {
             var $this = $(this);
             var start = parseInt($this.text().replace(/,/g, ""));
@@ -24,13 +24,16 @@
             	duration: duration == undefined ? 1000 : duration,
             	easing: ease == undefined ? "swing" : ease,
             	step: function() {
-            		$this.text(Math.floor(this.value));
+            		//$this.text(Math.floor(this.value));
+                    $this.text(this.value.toFixed(2));
 					if (commas) { $this.text($this.text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")); }
+                    if (prefix) { $this.text(prefix+$this.text());}
             	},
             	complete: function() {
             	   if (parseInt($this.text()) !== stop) {
             	       $this.text(stop);
 					   if (commas) { $this.text($this.text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")); }
+                       if (prefix) { $this.text(prefix+$this.text());}
             	   }
             	}
             });
