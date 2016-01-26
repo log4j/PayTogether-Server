@@ -39,7 +39,7 @@ exports.login = function (req, res, next){
             return next(err);
         }
         if (!user) {
-            return res.jsonp({
+            return res.json({
                 result: false,
                 err: info
             });
@@ -60,7 +60,8 @@ exports.login = function (req, res, next){
 
             return res.json({
                 id: user.id,
-                result: true
+                result: true,
+                data: req.user
             });
 
         });
@@ -80,7 +81,7 @@ exports.createUser = function (req, res, next) {
     var user = new User();
     user.email =  req.body.email;
     user.password = req.body.password;
-    user.username = req.body.email;
+    user.username = req.body.username;
 
     if(tools.isEmpty(user.email)||tools.isEmpty(user.password)){
         return res.json(Results.ERR_PARAM_ERR);
@@ -90,9 +91,7 @@ exports.createUser = function (req, res, next) {
 
 
     var ep = new EventProxy();
-    ep.all('checkEmail', function () {
-
-
+    ep.all('checkEmail','checkUsername', function () {
         user.save(function (err, user) {
 
             if (err)
@@ -116,19 +115,38 @@ exports.createUser = function (req, res, next) {
         email: user.email
     }, function (err, item) {
         if (item != null) {
-            ep.emit("error", 'ERR_EXISTED_EMAIL ');
+            ep.emit("error", 'ERR_EXISTED_EMAIL');
         } else {
             ep.emit('checkEmail');
         }
     });
+    
+    User.findOne({
+        username: user.username
+    }, function (err, item) {
+        if (item != null) {
+            ep.emit("error", 'ERR_EXISTED_NAME');
+        } else {
+            ep.emit('checkUsername');
+        }
+    });
+    
 };
 
 exports.getUserList = function (req, res, next) {
 
 
-    var query = {};
+    var query = {$and:[]};
     if (req.query.gender)
-        query.gender = req.query.gender;
+        query.$and.push({gender:req.query.gender});
+        
+    if(req.query.usernameOrEmail)
+        query.$and.push({
+            $or:[
+                {username:req.query.usernameOrEmail},
+                {email:req.query.usernameOrEmail}
+                ]
+            });
 
 
     User.find(
@@ -136,7 +154,7 @@ exports.getUserList = function (req, res, next) {
         'firstname lastname username email gender school avatar avatar_url description tags last_login rent_start rent_duration',
         function (err, users) {
             if (err) {
-                res.json(Results.ERR_DB_ERR);
+                res.json(Object.assign(Results.ERR_DB_ERR,{msg:err}));
             } else {
                 res.json({
                     result: true,
@@ -145,6 +163,8 @@ exports.getUserList = function (req, res, next) {
             }
         });
 };
+
+
 
 exports.getUser = function (req, res, next) {
     var userId = req.param('id');

@@ -31,6 +31,9 @@ License: You must have a valid license purchased only from themeforest(the above
         <link href="../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="../assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
         <link href="../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/angularjs/plugins/ui-select/select.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/plugins/angularjs/plugins/angular-growl/angular-growl.min.css" rel="stylesheet" type="text/css" />
+        
         <!-- END GLOBAL MANDATORY STYLES -->
         <!-- BEGIN DYMANICLY LOADED CSS FILES(all plugin and page related styles must be loaded between GLOBAL and THEME css files ) -->
         <link id="ng_load_plugins_before" />
@@ -39,6 +42,7 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- DOC: To use 'rounded corners' style just load 'components-rounded.css' stylesheet instead of 'components.css' in the below style tag -->
         <link href="../assets/global/css/components.min.css" id="style_components" rel="stylesheet" type="text/css" />
         <link href="../assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+        <link href="../assets/global/css/style.css" rel="stylesheet" type="text/css" />
         <link href="../assets/layouts/layout3/css/layout.min.css" rel="stylesheet" type="text/css" />
         <link href="../assets/layouts/layout3/css/themes/default.min.css" rel="stylesheet" type="text/css" id="style_color" />
         <link href="../assets/layouts/layout3/css/custom.min.css" rel="stylesheet" type="text/css" />
@@ -49,7 +53,8 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- DOC: Apply "page-header-menu-fixed" class to set the mega menu fixed  -->
     <!-- DOC: Apply "page-header-top-fixed" class to set the top menu fixed  -->
 
-    <body ng-controller="AppController" class="page-on-load">
+    <body ng-controller="AppController" class="page-on-load {{$state.current.data.bodyStyle}}">
+        <div growl style="z-index:9999"></div>
         <!-- BEGIN PAGE SPINNER -->
         <div ng-spinner-bar class="page-spinner-bar">
             <div class="bounce1"></div>
@@ -58,16 +63,17 @@ License: You must have a valid license purchased only from themeforest(the above
         </div>
         <!-- END PAGE SPINNER -->
         <!-- BEGIN HEADER -->
-        <div data-ng-include="'tpl/header.html'" data-ng-controller="HeaderController" class="page-header"> </div>
+        <div ng-hide='$state.current.data.contentOnly' data-ng-include="'tpl/header.html'" data-ng-controller="HeaderController" class="page-header"> </div>
         <!-- END HEADER -->
         <div class="clearfix"> </div>
         <!-- BEGIN CONTAINER -->
         <div class="page-container">
             <!-- BEGIN PAGE HEAD -->
-            <div data-ng-include="'tpl/page-head.html'" data-ng-controller="PageHeadController" class="page-head"> </div>
+            <div ng-hide='$state.current.data.contentOnly' 
+                data-ng-include="'tpl/page-head.html'" data-ng-controller="PageHeadController" class="page-head"> </div>
             <!-- END PAGE HEAD -->
             <!-- BEGIN PAGE CONTENT -->
-            <div class="page-content">
+            <div class="" ng-class="{'page-content':!$state.current.data.contentOnly}">
                 <div class="container">
                     <!-- BEGIN ACTUAL CONTENT -->
                     <div ui-view class="fade-in-up"> </div>
@@ -76,15 +82,18 @@ License: You must have a valid license purchased only from themeforest(the above
             </div>
             <!-- END PAGE CONTENT -->
             <!-- BEGIN QUICK SIDEBAR -->
-            <a href="javascript:;" class="page-quick-sidebar-toggler">
+            <a ng-hide='$state.current.data.contentOnly'
+                href="javascript:;" class="page-quick-sidebar-toggler">
                 <i class="icon-login"></i>
             </a>
-            <div data-ng-include="'tpl/quick-sidebar.html'" data-ng-controller="QuickSidebarController" class="page-quick-sidebar-wrapper"></div>
+            <div ng-hide='$state.current.data.contentOnly'
+                data-ng-include="'tpl/quick-sidebar.html'" data-ng-controller="QuickSidebarController" class="page-quick-sidebar-wrapper"></div>
             <!-- END QUICK SIDEBAR -->
         </div>
         <!-- END CONTAINER -->
         <!-- BEGIN FOOTER -->
-        <div data-ng-include="'tpl/footer.html'" data-ng-controller="FooterController"> </div>
+        <div ng-hide='$state.current.data.contentOnly'
+            data-ng-include="'tpl/footer.html'" data-ng-controller="FooterController"> </div>
         <!-- END FOOTER -->
         <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
         <!-- BEGIN CORE JQUERY PLUGINS -->
@@ -100,18 +109,34 @@ License: You must have a valid license purchased only from themeforest(the above
         <script src="../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
         <script src="../assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
         <script src="../assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+        
+        <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/jquery-validation/js/additional-methods.js" type="text/javascript"></script>
+        
+                           
         <!-- END CORE JQUERY PLUGINS -->
         <!-- BEGIN CORE ANGULARJS PLUGINS -->
         <script src="../assets/global/plugins/angularjs/angular.min.js" type="text/javascript"></script>
         <script src="../assets/global/plugins/angularjs/angular-sanitize.min.js" type="text/javascript"></script>
         <script src="../assets/global/plugins/angularjs/angular-touch.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/angularjs/angular-animate.js" type="text/javascript"></script>
         <script src="../assets/global/plugins/angularjs/plugins/angular-ui-router.min.js" type="text/javascript"></script>
         <script src="../assets/global/plugins/angularjs/plugins/ocLazyLoad.min.js" type="text/javascript"></script>
         <script src="../assets/global/plugins/angularjs/plugins/ui-bootstrap-tpls.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/angularjs/plugins/ui-select/select.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/angularjs/plugins/angular-local-storage/angular-local-storage.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/angularjs/plugins/angular-growl/angular-growl.js" type="text/javascript"></script>
+        
+        
         <!-- END CORE ANGULARJS PLUGINS -->
         <!-- BEGIN APP LEVEL ANGULARJS SCRIPTS -->
+        
         <script src="js/main.js" type="text/javascript"></script>
+        <script src="js/services/UserService.js" type="text/javascript"></script>
+        <script src="js/services/AlertService.js" type="text/javascript"></script>
+        <script src="js/services/ColorService.js" type="text/javascript"></script>
         <script src="js/directives.js" type="text/javascript"></script>
+        <script src="js/controllers/CommonController.js" type="text/javascript"></script>
         <!-- END APP LEVEL ANGULARJS SCRIPTS -->
         <!-- BEGIN APP LEVEL JQUERY SCRIPTS -->
         <script src="../assets/global/scripts/app.min.js" type="text/javascript"></script>

@@ -1,0 +1,135 @@
+
+<div class="modal-body" style="padding:0;">
+    <div class="portlet box purple" style="margin:0px;">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-gift"></i> Group Information </div>
+            <div class="tools">
+                <a href="#" class="remove" ng-click="cancel()"> </a>
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <form role="form" class="form-horizontal" ng-submit="submitGroup()">
+                <div class="form-body">
+                    <div class="form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="dashboard-stat {{group.color}}">
+                                <div class="visual">
+                                    <i class="fa fa-{{group.icon}}"></i>
+                                </div>
+                                <div class="details">
+                                    <div class="number"> 1349 </div>
+                                    <div class="desc"> New Feedbacks </div>
+                                </div>
+                                <a class="more" href="#"> View more
+                                    <i class="m-icon-swapright m-icon-white"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>                
+                    <div class="form-group" ng-class="{'has-error':hasError}">
+                        <label class="col-md-4 control-label">Group Name</label>
+                        <div class="col-md-8">
+                            <div class="input-icon right">
+                                <input type="text" class="form-control" ng-model="group.name" ng-change="onNameChange()"> </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Label Color</label>
+                        <div class="col-md-8 color-selectd">
+                            <div class="input-group">
+                            <ui-select ng-model="group.color" theme="bootstrap">
+                                <ui-select-match placeholder="Select or search a person in the list...">
+                                    {{$select.selected}} 
+                                    <small  class="bg-{{$select.selected}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</small>
+                                </ui-select-match>
+                                <ui-select-choices repeat="color in colors | filter: $select.search">             
+                                    <span ng-bind-html="color | highlight: $select.search" ></span>
+                                    <small  class="bg-{{color}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</small>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button ng-click="randomColor()" class="btn btn-default">
+                                    <span class="fa fa-refresh"></span>
+                                </button>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="false">
+                        <label class="col-md-4 control-label">Label Icon</label>
+                        <div class="col-md-8 color-selectd">
+                            <div class="input-group">
+                            <ui-select ng-model="group.icon" theme="bootstrap">
+                                <ui-select-match placeholder="Select or search a person in the list...">
+                                    <i  class="fa fa-{{$select.selected}}"></i>&nbsp;
+                                </ui-select-match>
+                                <ui-select-choices repeat="icon in icons | filter: $select.search">             
+                                    <span ng-bind-html="icon | highlight: $select.search" ></span>
+                                    <i  class="fa fa-{{icon}}"></i>&nbsp;
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button ng-click="randomIcon()" class="btn btn-default">
+                                    <span class="fa fa-refresh"></span>
+                                </button>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Add new member</label>
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="keyword"> 
+                                <span class="input-group-btn">
+                                    <button class="btn blue" type="button" ng-click="addUser(keyword)">Add</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group group-create-members">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="portlet box {{group.color}}" style="margin:0px;">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-gift"></i> Members </div>
+                                    <div class="tools hide">
+                                        <a href="#" class="remove" ng-click="cancel()"> </a>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="row">
+                                        <div class="col-md-6" ng-repeat="member in group.users track by $index">
+                                            <div class="note " 
+                                                ng-class="{'note-success':member.status==='verified',
+                                                    'note-warning':member.status==='verifying',
+                                                    'note-danger':member.status==='fresh'}">
+                                                {{member.username}}
+                                                <i class="fa fa-spinner" ng-class="{'fa-spin':member.status==='verifying'}" ng-show="member.status==='verifying'"></i>
+                                                <i class="fa fa-check-square" ng-show="member.status==='verified'"></i>
+                                                {{member.type==='self'?'(You)':''}}
+                                                <a class="btn fa fa-close" ng-hide='member.type=="self"' ng-click="removeUser($index)"></a>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        
+                       
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-offset-4 col-md-8">
+                            <button type="button" class="btn default" ng-click="cancel()">Cancel</button>
+                            <button type="submit" class="btn blue">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

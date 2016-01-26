@@ -1,0 +1,45 @@
+
+.modal-no-border .modal-content{
+    border: none;
+}
+
+
+.color-select ul.ui-select-choices {
+    margin-top: 0px !important;
+}
+
+.color-select ul.ui-select-choices a{
+    padding: 0px !important;
+}
+
+.color-select ul.ui-select-choices a div{
+    padding: 3px;
+    color: white;
+}
+
+
+.group-create-members .note{
+    padding: 2px 8px;
+    height: 30px;
+    line-height: 26px;
+    margin-bottom: 10px;
+}
+
+.group-create-members .note a{
+    float: right;
+    display: inline-block;
+    padding: 2px 6px;
+}
+
+.group-create-members .portlet-title{
+    transition: all 0.5s;
+}
+
+.dashboard-stat {
+    transition: all 0.5s;
+}
+
+.dashboard-stat a{
+    transition: all 0.3s;
+}
+

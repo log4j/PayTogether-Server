@@ -86,11 +86,11 @@ passport.deserializeUser(function (id, done) {
 //   however, in this example we are using a baked-in set of users.
 
 passport.use(new LocalStrategy({
-        usernameField: 'email',
+        usernameField: 'username',
         passwordField: 'password',
         badRequestMessage: 'ERR_MISSING_CREDENTIALS'
     },
-    function (email, password, done) {
+    function (username, password, done) {
         // asynchronous verification, for effect...
         process.nextTick(function () {
 
@@ -98,7 +98,7 @@ passport.use(new LocalStrategy({
             // username, or the password is not correct, set the user to `false` to
             // indicate failure and set a flash message.  Otherwise, return the
             // authenticated `user`.
-            User.findOne({email: email}, function (err, user) {
+            User.findOne({$or:[{email: username},{username:username}]}, function (err, user) {
                 if (err) {
                     return done(err);
                 }
@@ -112,9 +112,8 @@ passport.use(new LocalStrategy({
                 user.last_login = new Date();
                 user.save();
 
-
                 return done(null, user);
-            })
+            });
         });
     }
 ));

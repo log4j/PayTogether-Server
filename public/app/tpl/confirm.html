@@ -1,0 +1,31 @@
+<div class="modal-body" style="padding:0;">
+    <div class="portlet box {{color}}" style="margin:0px;">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-{{icon}}"></i> {{title}} </div>
+            <div class="tools">
+                <a href="#" class="remove" ng-click="cancel()"> </a>
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <form role="form" class="form-horizontal">
+                <div class="form-body">
+                    <div class="form-group">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-bind-html="content">
+                           
+                        </div>
+                    </div>             
+                 
+                </div>
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-offset-4 col-md-8">
+                            <button type="button" class="btn default" ng-click="$dismiss()">{{cancelString}}</button>
+                            <button type="button" class="btn blue" ng-click="$close()">{{okString}}</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

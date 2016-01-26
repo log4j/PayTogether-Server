@@ -91,6 +91,7 @@ var UserSchema = new Schema({
     profile_filled : {
         type: Boolean
     },
+    groups: [Schema.Types.ObjectId],
     create_at: {
         type: Date,
         default: Date.now

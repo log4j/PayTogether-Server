@@ -9,7 +9,7 @@ var config = {
 	port: 4000,
     auth_cookie_name: 'rentference_cookie',
 	session_secret: 'rentference_secret',
-	db: 'mongodb://127.0.0.1/emart',
+	db: 'mongodb://127.0.0.1/paytogether_2',
     image_max_size: 2
 
 };

@@ -4,10 +4,12 @@ var imageRoute = require('./routes/imageRoute');
 var initRoute = require('./routes/initRoute');
 var cartRoute = require('./routes/cartRoute');
 var orderRoute = require('./routes/orderRoute');
+var payRoute = require('./routes/payRoute');
+
 
 var passport = require('passport');
 
-var multer  = require('multer');
+var multer = require('multer');
 var upload = multer({ dest: './public/upload' });
 
 
@@ -43,6 +45,11 @@ module.exports = function (app) {
     app.post('/cart', cartRoute.createItem);
     app.put('/cart/:id', cartRoute.updateItem);
     app.delete('/cart/:id', cartRoute.deleteItem);
+
+    app.get('/pay', payRoute.getList);
+    app.post('/pay', payRoute.createItem);
+    app.put('/pay/:id', payRoute.updateItem);
+    app.delete('/pay/:id', payRoute.deleteItem);
 
 
     app.get('/order', orderRoute.getList);
