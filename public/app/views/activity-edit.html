@@ -1,0 +1,220 @@
+
+<div class="modal-body" style="padding:0;">
+    <div class="portlet box {{group.color}}" style="margin:0px;">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-gift"></i> Activity Edit </div>
+            <div class="tools">
+                <a href="#" class="remove" ng-click="$dismiss()"> </a>
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <form role="form" class="form-horizontal" ng-submit="submitActivity()">
+                <div class="form-body">               
+                    <div class="form-group" ng-class="{'has-error':errors.name}">
+                        <label class="col-md-3 control-label">What For</label>
+                        <div class="col-md-9">
+                            <div class="input-icon right">
+                                <input type="text" class="form-control" ng-model="activity.name" ng-change="onNameChange();errors.name=false;"> </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error':errors.amount}">
+                        <label class="col-md-3 control-label">Amount</label>
+                        <div class="col-md-9">
+                            <div class="input-icon right">
+                                <input type="number" step="any" class="form-control" ng-model="activity.amount" ng-change="summary();errors.amount=false;"> </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error':errors.from}">
+                        <label class="col-md-3 control-label">Paied By</label>
+                        <div class="col-md-9 color-selectd">
+                            <!--<div class="input-group">-->
+                            <ui-select ng-model="activity.from" theme="bootstrap" ng-change="errors.from=false;">
+                                <ui-select-match placeholder="Select or search a person in the group">
+                                    {{$select.selected.displayName}} 
+                                    <small  class="">{{$select.selected.tag}}</small>
+                                </ui-select-match>
+                                <ui-select-choices repeat="user in group.users | filter: $select.search">             
+                                    <span ng-bind-html="user.displayName | highlight: $select.search" ></span>
+                                    <small  class="bg-" ng-bind-html="user.tag | highlight: $select.search"></small>
+                                </ui-select-choices>
+                            </ui-select>
+                            <!--</div>-->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Date</label>
+                        <div class="col-md-9">
+                            <input class="form-control  date-picker" ng-model="activity.date" size="16" type="text"  />
+                            <!--<span class="help-block"> Select date </span>-->
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="false">
+                        <label class="col-md-4 control-label">For</label>
+                        <div class="col-md-8 color-selectd">
+                            <div class="input-group">
+                            <ui-select ng-model="group.icon" theme="bootstrap">
+                                <ui-select-match placeholder="Select or search a person in the list...">
+                                    <i  class="fa fa-{{$select.selected}}"></i>&nbsp;
+                                </ui-select-match>
+                                <ui-select-choices repeat="icon in icons | filter: $select.search">             
+                                    <span ng-bind-html="icon | highlight: $select.search" ></span>
+                                    <i  class="fa fa-{{icon}}"></i>&nbsp;
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button ng-click="randomIcon()" class="btn btn-default">
+                                    <span class="fa fa-refresh"></span>
+                                </button>
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <label class="col-md-3 control-label">For</label>
+                        <div class="col-md-9">
+                            <div class="table-scrollable">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                             <a class="btn green btn-outline btn-circle btn-sm" ng-click="chooseAll()">Choose All</a>
+                                        </th>
+                                        <th colspan="2"> 
+                                            <div class="btn-group btn-group-devided">
+                                            <label class="btn green btn-outline btn-circle btn-sm" 
+                                            ng-class="{'active':activity.shareByPercentage}">
+                                                <input style="display:none" type="radio" ng-value="true" ng-model="activity.shareByPercentage"
+                                                ng-change="calculateFinal()">Share by Percentage</label>
+                                            <label class="btn green btn-outline btn-circle btn-sm"
+                                            ng-class="{'active':!activity.shareByPercentage}">
+                                                <input style="display:none" type="radio" ng-value="false"  ng-model="activity.shareByPercentage"
+                                                ng-change="calculateFinal()">Specific Amount</label>
+                                        </div> </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="user in group.users">
+                                        <td> 
+                                            <div class="md-checkbox" >
+                                                <input type="checkbox" id="for_check_{{$index}}" ng-model="user.selected" 
+                                                ng-change="summary()" class="md-check">
+                                                <label for="for_check_{{$index}}">
+                                                    <span></span>
+                                                    <span class="check"></span>
+                                                    <span class="box"></span> {{user.displayName}}
+                                                </label>
+                                            </div> 
+                                        </td>
+                                        <td style="padding:3px;">
+                                            <div class="input-group input-small no-animate" ng-show="activity.shareByPercentage">
+                                                <input type="number" step="any" ng-model="user.percentage" ng-change="summary()" class="no-animate form-control" placeholder="99">
+                                                <span class="no-animate input-group-addon">
+                                                    %
+                                                </span>
+                                            </div>
+                                            <div class="input-group input-small no-animate" ng-hide="activity.shareByPercentage">
+                                                <span class="no-animate input-group-addon">
+                                                    $
+                                                </span>
+                                                <input type="number" step="any" ng-model="user.amount" ng-change="summary()" class="no-animate form-control" placeholder="123.45">                                        
+                                            </div>
+                                        </td>
+                                        <td> {{user.finalAmount|currency:'$':2}} </td>
+                                    </tr>
+                                </tbody>
+                                <thead>
+                                    <tr class="activity-remaining" ng-class="{'has-error':errors.remaining}">
+                                        <th>
+                                            <label>Remaining</label>
+                                        </th>
+                                        <th>
+                                            <label ng-show="activity.shareByPercentage">{{activity.remainingPercentage}} %</label>
+                                            <label ng-show="!activity.shareByPercentage">$ {{activity.remainingAmount}} </label>
+                                        </th>
+                                        <th>
+                                            <a class="btn green btn-outline btn-circle btn-sm" ng-click="average()">Average</a>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            </div>
+                                                
+                            <div class="md-checkbox-list" ng-if="false">
+                                <div clss="row">
+                                    <div class="col-md-12">
+                                        <div class="btn-group btn-group-devided" data-toggle="buttons">
+                                            <label class="btn green btn-outline btn-circle btn-sm active">
+                                                <input type="radio" name="options" class="toggle" id="option1">Share by Percentage</label>
+                                            <label class="btn green btn-outline btn-circle btn-sm">
+                                                <input type="radio" name="options" class="toggle" id="option2">Specific Amount</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" ng-repeat="user in group.users">
+                                    <div class="col-md-4">
+                                        <div class="md-checkbox" >
+                                            <input type="checkbox" id="for_check_{{$index}}" ng-model="user.selected" class="md-check">
+                                            <label for="for_check_{{$index}}">
+                                                <span></span>
+                                                <span class="check"></span>
+                                                <span class="box"></span> {{user.displayName}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        How much you
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group group-create-members" ng-if="false">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="portlet box {{group.color}}" style="margin:0px;">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-gift"></i> Members </div>
+                                    <div class="tools hide">
+                                        <a href="#" class="remove" ng-click="cancel()"> </a>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="row">
+                                        <div class="col-md-6" ng-repeat="member in group.users track by $index">
+                                            <div class="note " 
+                                                ng-class="{'note-success':member.status==='verified',
+                                                    'note-warning':member.status==='verifying',
+                                                    'note-danger':member.status==='fresh'}">
+                                                {{member.username}}
+                                                <i class="fa fa-spinner" ng-class="{'fa-spin':member.status==='verifying'}" ng-show="member.status==='verifying'"></i>
+                                                <i class="fa fa-check-square" ng-show="member.status==='verified'"></i>
+                                                {{member.type==='self'?'(You)':''}}
+                                                <a class="btn fa fa-close" ng-hide='member.type=="self"' ng-click="removeUser($index)"></a>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        
+                       
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-offset-4 col-md-8">
+                            <button type="button" class="btn default" ng-click="cancel()">Cancel</button>
+                            <button type="submit" class="btn blue">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    ComponentsDateTimePickers.init(); // init todo page
+</script>

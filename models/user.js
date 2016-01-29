@@ -6,7 +6,7 @@ var utility = require('utility');
 var UserSchema = new Schema({
     username: {
         type: String,
-        index: { unique: true}
+        // index: { unique: false}
     },
     firstname: {
         type: String
@@ -23,7 +23,7 @@ var UserSchema = new Schema({
     },
     email: {
         type: String,
-        index: { unique: true }
+        // index: { unique: false }
     },
     birthday: {
         type: Date
@@ -92,6 +92,13 @@ var UserSchema = new Schema({
         type: Boolean
     },
     groups: [Schema.Types.ObjectId],
+    invisible: {
+        type: Boolean,
+        default: false
+    },
+    invitor:{
+        type: Schema.Types.ObjectId  
+    },
     create_at: {
         type: Date,
         default: Date.now
@@ -105,16 +112,39 @@ var UserSchema = new Schema({
         default: Date.now
     }
 
-
+    
+},{
+    toObject: {
+    virtuals: true
+    }
+    ,toJSON: {
+    virtuals: true
+    }
 });
 
-UserSchema.virtual('avatar_url').get(function () {
-    //if(this.avatar){
-        return '/avatar/'+this.avatar;
-    //}
-    //return 'http://www.gravatar.com/avatar/' + utility.md5(this.email.toLowerCase()) + '?size=48';
-    //return 'avatars/' + this.avatar;
+UserSchema.virtual('displayName').get(function () {
+    if(this.invisible){
+        if(this.firstname)
+            return this.firstname;
+        else
+            return this.username;
+    }else{
+        if(this.firstname || this.lastname){
+            return this.firstname+' '+this.lastname;
+        }else{
+            return this.username;
+        }
+    }
 });
+
+UserSchema.virtual('tag').get(function () {
+    if(this.invisible){
+        return '';
+    }else{
+        return this.email;
+    }
+});
+
 
 
 UserSchema.virtual('age').get(function () {
@@ -123,17 +153,11 @@ UserSchema.virtual('age').get(function () {
     //return 'avatars/' + this.avatar;
 });
 
-
-UserSchema.index({
-    username: 1,
-    email: 1
-}, {
-    unique: true
-});
-UserSchema.index({
-
-}, {
-    unique: true
-});
+// UserSchema.index({
+//     username: 1,
+//     email: 1
+// }, {
+//     unique: false
+// });
 
 mongoose.model('User', UserSchema);

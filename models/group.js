@@ -11,16 +11,16 @@ var GroupSchema = new Schema({
     creator: {
         type: ObjectId
     },
-    pays : [Schema.Types.ObjectId],
+    activities : [Schema.Types.ObjectId],
     pay_amount: {
         type: Number,
         default: 0
     },
-    card_icon :{
+    icon :{
         type: String,
-        default: 'fa-users'
+        default: 'users'
     },
-    card_color: {
+    color: {
         type: String,
         default: 'blue'
     },

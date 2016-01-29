@@ -13,7 +13,7 @@ var EventProxy = require('eventproxy');
 var tools = require('../common/tools');
 var Results = require('./commonResult');
 
-var Pay = require('../models').Pay;
+var Activity = require('../models').Activity;
 var Group = require('../models').Group;
 var User = require('../models').User;
 
@@ -23,39 +23,74 @@ exports.createItem = function (req, res, next){
     var group = new Group();
     group.name = req.body.name;
     group.creator = req.body.creator;
-    group.users = req.body.users;
-    group.fresh_users = req.body.fresh_users;
+    group.color = req.body.color;
+    group.icon = req.body.icon;
     
-    group.save(function(err,item){
-        if(err){
-            return res.json(Results.ERR_DB_ERR);
+    var users = req.body.users;
+    
+    console.log('req.body',req.body);
+    //group.fresh_users = req.body.fresh_users;
+    
+    //not all users have _id, create invisible user account for those users
+    var inVisibleUsers = [];
+    var visibleUserIds = [];
+    for(var i=0;i<users.length;i++){
+        if(!users[i]._id){
+            inVisibleUsers.push(users[i]);
         }else{
-            //update each user in Group
-            var ep = EventProxy();
-            ep.atfer('userUpdated',item.users.length,function(list){
-                return res.json({result:true,data:item});
-            });
-            ep.bind('error', function (err) {
-                ep.unbind();
-                return res.json(Object.assign(Results.ERR_DB_ERR,{mes:'can not update all users'}));
-            });
-            for(var i=0;i<item.users.length;i++){
-                User.findById(item.users[i], function (userErr, user){
-                    if(userErr)
-                        return ep.emit('error',userErr);
-                    else{
-                        user.groups.push(item._id);
-                        user.save(function(userSaveErr){
-                            if(userSaveErr)
-                                return ep.emit('error',userSaveErr);
-                            else
-                                ep.emit('userUpdated'); 
-                        });
-                    }
-                });
-            }
+            visibleUserIds.push(users[i]._id);
         }
+    }
+    
+    var userEP = EventProxy();
+    userEP.after('createInvisibleUser',inVisibleUsers.length,function(newUsers){
+        for(var i=0;i<newUsers.length;i++){
+            visibleUserIds.push(newUsers[i]._id);
+        }
+        console.log('visible user id:',visibleUserIds);
+        group.users = visibleUserIds;
+        
+        group.save(function(err,item){
+            if(err){
+                return res.json(Object.assign(Results.ERR_DB_ERR,{msg:'fail to create group:'+err}));
+            }else{
+                //update each user in Group
+                var ep = EventProxy();
+                ep.after('userUpdated',item.users.length,function(list){
+                    return res.json({result:true,data:item});
+                });
+                ep.fail(function (err) {
+                    return res.json(Object.assign(Results.ERR_DB_ERR,{msg:'can not update all users'+err}));
+                });
+                for(var i=0;i<item.users.length;i++){
+                    User.findById(item.users[i], function (userErr, user){
+                        if(userErr)
+                            return ep.emit('error',userErr);
+                        else{
+                            user.groups.push(item._id);
+                            user.save(ep.done('userUpdated'));
+                        }
+                    });
+                }
+            }
+        });
+        
     });
+    userEP.fail(function(err){
+        return res.json(Object.assign(Results.ERR_DB_ERR,{msg:'can not create all invisible users'+err}));
+    });
+    
+    for(var i=0;i<inVisibleUsers.length;i++){
+        var user = new User();
+        user.username = user._id;
+        user.firstname = inVisibleUsers[i].username;
+        user.email = user._id +'@paytogether.me';
+        user.invisible = true;
+        user.invitor = users[0]._id;
+        user.save(userEP.done('createInvisibleUser'));
+    }
+    
+    
 };
 
 
@@ -65,7 +100,7 @@ exports.getItem = function (req, res, next) {
     var itemId = req.param('id');
     if (itemId) {
         var query = Group.findById(itemId);
-        query.populate('users','fisrtname lastname avatar','User');
+        query.populate('users','username email firstname lastname avatar invisible','User');
         query.exec(function(err,item){
             if(err){
                 res.json(Results.ERR_DB_ERR);
@@ -94,11 +129,14 @@ exports.getList = function (req, res, next) {
 
     var query = User.findById(req.query.user);
     //query.populate('user','lastname avatar');
-    query.populate('groups','name users fresh_users','Group');
+    query.populate('groups','name users color icon','Group');
     query.sort({create_at:-1});
     query.exec(function(err,item){
         if(err)
             return res.json(Results.ERR_DB_ERR);
+            
+        // Group.populate(item.groups)
+            
         return res.json({result:true,data:item.groups});
     });
 };

@@ -1,0 +1,202 @@
+<!-- BEGIN PAGE BREADCRUMB -->
+<ul class="page-breadcrumb breadcrumb hide">
+    <li>
+        <a href="#">Home</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li class="active"> Dashboard </li>
+</ul>
+<!-- END PAGE BREADCRUMB -->
+<!-- BEGIN MAIN CONTENT -->
+<div >
+    <div class="note note-info hide">
+        <h3>Meet Metronic AngularJS Version!
+            <span class="close" data-close="note"></span>
+        </h3>
+        <p> AngularJS version of Metronic gives an extremely fast browsing experience to users. It uses lazy loading of dependency resources(modules, controllers, templates, jquery plugins, javascripts and even css files) on demand. UI-Router is used for
+            flexible routing with nested views. UI Bootstrap enables using all Bootstrap framework components with pure AngularJS directives. </p>
+        <span class="label label-danger">NOTE:</span> All Metronic features from the HTML version(pages, layout options, components, plugins, etc) are fully compatible in the AngularJS version.</span>
+        </p>
+    </div>
+    <!-- BEGIN DASHBOARD STATS -->
+    <div class="row">
+        
+        <div class="col-md-6 col-sm-6">
+            <div class="dashboard-stat {{group.color}}">
+                <div class="visual">
+                    <i class="fa fa-{{group.icon}}"></i>
+                </div>
+                <div class="details">
+                    <div class="number"> {{group.totalSpent | currency:"$":2}} </div>
+                    <div class="desc"> {{group.name}} </div>
+                </div>
+                <a class="more" href="#" ng-click="showDetail(group)"> View more
+                    <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+            <!-- BEGIN PORTLET-->
+            <div class="portlet light bordered ">
+                <div class="portlet-title">
+                    <div class="caption caption-md">
+                        <i class="icon-bar-chart font-red"></i>
+                        <span class="caption-subject font-red bold uppercase">Member Activity</span>
+                        <span class="caption-helper hide">weekly stats...</span>
+                    </div>
+                    <div class="actions" ng-if="true">
+                         <a class="btn red btn-outline btn-circle btn-sm" ng-click="showHintSolve()">Hint to Balance All</a>
+                        <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="#"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body" >
+                    <div class="row number-stats margin-bottom-30" ng-if="false">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="stat-left">
+                                <div class="stat-chart">
+                                    <!-- do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break -->
+                                    <div id="sparkline_bar"></div>
+                                </div>
+                                <div class="stat-number">
+                                    <div class="title"> Total </div>
+                                    <div class="number"> 2460 </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="stat-right">
+                                <div class="stat-chart">
+                                    <!-- do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break -->
+                                    <div id="sparkline_bar2"></div>
+                                </div>
+                                <div class="stat-number">
+                                    <div class="title"> New </div>
+                                    <div class="number"> 719 </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-scrollable table-scrollable-borderless">
+                        <table class="table table-hover table-light">
+                            <thead>
+                                <tr class="uppercase">
+                                    <th colspan="2"> MEMBER </th>
+                                    <th> PAID </th>
+                                    <th> USED </th>
+                                    <th class="item-in-fullscreen"> RECEIVED </th>
+                                    <th class="item-in-fullscreen"> SPENT </th>
+                                    <th > RATE </th>
+                                    <th> BALANCE </th>
+                                </tr>
+                            </thead>
+                            <tr ng-repeat="member in group.users">
+                                <td class="fit">
+                                    <!--<img class="user-pic rounded" src="../assets/pages/media/users/avatar4.jpg"> </td>-->
+                                <td>
+                                    <a href="javascript:;" class="primary-link">{{member.displayName}}</a>
+                                </td>
+                                <td> {{member.totalPaid | currency:"$":2}} </td>
+                                <td> {{member.totalReceived+member.totalSpent | currency:"$":2}} </td>
+                                <td class="item-in-fullscreen"> {{member.totalReceived | currency:"$":2}} </td>
+                                <td class="item-in-fullscreen"> {{member.totalSpent | currency:"$":2}} </td>
+                                <td >
+                                    <span class="bold font-green">{{member.totalSpent*100/group.totalSpent | currency:"":2}} %</span>
+                                </td>
+                                <td>
+                                    <span class="bold " ng-class="{'font-red':member.totalPaid<member.totalSpent+member.totalReceived,
+                                    'font-green':member.totalPaid>=member.totalSpent+member.totalReceived}">
+                                        {{member.totalPaid-member.totalSpent-member.totalReceived | currency:"$":2}}
+                                    </span>
+                                </td>
+                            </tr>
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- END PORTLET-->
+        </div>
+        
+        <div class="col-md-6 col-sm-6">
+            <!-- BEGIN REGIONAL STATS PORTLET-->
+            <div class="portlet light bordered ">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-share font-green"></i>
+                        <span class="caption-subject font-green bold uppercase">Activities</span>
+                    </div>
+                    <div class="actions">
+                        <a class="btn green btn-outline btn-circle btn-sm" ng-click="startEditActivity()">Pay</a>
+                        <a class="btn red btn-outline btn-circle btn-sm" ng-click="startEditTransfer()">Transfer</a>
+                        <div class="btn-group">
+                            
+                            <a class="btn btn-sm btn-default btn-circle" href="#" data-toggle="dropdown" dropdown-menu-hover data-close-others="true"> Filter By Member
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <div class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+                                <label ng-repeat="member in group.users">
+                                    <input type="checkbox" /> {{member.displayName}}</label>
+                                <!--<label>
+                                    <input type="checkbox" checked="" /> Membership</label>
+                                <label>
+                                    <input type="checkbox" /> Customer Support</label>
+                                <label>
+                                    <input type="checkbox" checked="" /> HR</label>
+                                <label>
+                                    <input type="checkbox" /> System</label>-->
+                            </div>
+                        </div>
+                        <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="#"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body activity-list">
+                    <div class="scroller" style="height: 320px;" data-always-visible="1" data-rail-visible="0">
+                        <uib-accordion close-others="true">
+                           
+                            <uib-accordion-group is-open="activity.status.open" ng-repeat="activity in activities">
+                            <uib-accordion-heading>
+                                <div class="label label-sm" ng-class="{'label-danger':activity.is_pay,'label-success':!activity.is_pay}">
+                                        <i class="fa" ng-class="{'fa-credit-card':activity.is_pay,'fa-exchange':!activity.is_pay}"></i>
+                                </div>
+                                <span class="label-activity-span" ng-if="activity.is_pay">{{activity.from.displayName}} paied {{activity.amount | currency:'$':2}} for {{activity.name}}</span>
+                                <span class="label-activity-span" ng-if="!activity.is_pay">{{activity.from.displayName}} transfer {{activity.amount | currency:'$':2}} to {{activity.to[0].user.displayName}}</span>
+                                <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': activity.status.open, 'glyphicon-chevron-right': !activity.status.open}"></i>
+                            </uib-accordion-heading>
+                            <uib-progress class="progress-striped active progress-activity" max="activity.amount" ng-init="types=['success','info','warning','danger']" animate="true">
+                                <uib-bar ng-repeat="bar in activity.to track by $index" value="bar.final" type="{{types[$index%4]}}">
+                                    <span ng-hide="bar.final/activity.amount < 0.1">{{bar.user.displayName}} ({{bar.final|currency:'$':2}})</span>
+                                </uib-bar>
+                            </uib-progress>
+                            
+                            <a class="pull-right btn green btn-outline btn-circle btn-xs" ng-click="popEdit(activity)" style="margin:0 10px;">Edit</a>
+                            <a class="pull-right btn red btn-outline btn-circle btn-xs" ng-click="removeActivity(activity)">Delete</a>
+                            
+                            </uib-accordion-group>
+                        </uib-accordion>
+                            
+                        
+                    </div>
+                    <div class="scroller-footer">
+                        <div class="btn-arrow-link pull-right">
+                            <a href="#">See All Records</a>
+                            <i class="icon-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END REGIONAL STATS PORTLET-->
+        </div>
+        
+    </div>
+    <!-- END DASHBOARD STATS -->
+    
+    
+    <div class="row">
+        
+        
+    </div>
+</div>
+<!-- END MAIN CONTENT -->
+<!-- BEGIN MAIN JS & CSS -->
+<script>
+    // Dashboard.init();
+</script>
+<!-- BEGIN MAIN JS & CSS -->

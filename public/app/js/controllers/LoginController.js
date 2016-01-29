@@ -1,5 +1,6 @@
 angular.module('MetronicApp')
-.controller('LoginController', function($rootScope, $scope, $state, $http, $timeout, userService) {
+.controller('LoginController', function($rootScope, $scope, $state, $http, $timeout, userService,
+groupService) {
     $scope.$on('$viewContentLoaded', function() {   
         // initialize core components
         //App.initAjax();
@@ -40,8 +41,9 @@ angular.module('MetronicApp')
         
         userService.login($scope.loginData)
         .then(function(res){
-            console.log(res);
+            // console.log(res);
             if(res.result){
+                //groupService.getGroupList(res.id);
                 $state.go('dashboard');
             }else{
                 if(res.err === 'ERR_INVALID_USER')

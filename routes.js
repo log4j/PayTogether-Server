@@ -4,7 +4,8 @@ var imageRoute = require('./routes/imageRoute');
 var initRoute = require('./routes/initRoute');
 var cartRoute = require('./routes/cartRoute');
 var orderRoute = require('./routes/orderRoute');
-var payRoute = require('./routes/payRoute');
+var activityRoute = require('./routes/activityRoute');
+var groupRoute = require('./routes/groupRoute');
 
 
 var passport = require('passport');
@@ -46,10 +47,16 @@ module.exports = function (app) {
     app.put('/cart/:id', cartRoute.updateItem);
     app.delete('/cart/:id', cartRoute.deleteItem);
 
-    app.get('/pay', payRoute.getList);
-    app.post('/pay', payRoute.createItem);
-    app.put('/pay/:id', payRoute.updateItem);
-    app.delete('/pay/:id', payRoute.deleteItem);
+    app.get('/activity', activityRoute.getList);
+    app.post('/activity', activityRoute.createItem);
+    app.put('/activity/:id', activityRoute.updateItem);
+    app.delete('/activity/:id', activityRoute.deleteItem);
+    
+    app.get('/group', groupRoute.getList);
+    app.get('/group/:id', groupRoute.getItem);
+    app.post('/group', groupRoute.createItem);
+    app.put('/group/:id', groupRoute.updateItem);
+    app.delete('/group/:id', groupRoute.deleteItem);
 
 
     app.get('/order', orderRoute.getList);

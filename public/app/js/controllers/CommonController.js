@@ -1,12 +1,33 @@
 
 /* Setup Layout Part - Header */
-MetronicApp.controller('HeaderController', function($scope, $state, userService, alertService) {
+MetronicApp.controller('HeaderController', function($scope, $state, userService, 
+alertService, groupService) {
     $scope.$on('$includeContentLoaded', function() {
         Layout.initHeader(); // init header
     });
     
-    console.log('hahah');
     
+    
+    $scope.$watch(function(){
+        return groupService.groupsUpdated;
+    },function(){
+        if(groupService.groupsUpdated){
+            $scope.groups = groupService.groups;
+            //console.log($scope.groups);
+        }else{
+            //console.log(userService.user);
+            //if(userService.user)
+            //    groupService.getGroupList(userService.user._id);
+        }
+    })
+    
+    $scope.$watch(function(){
+        return userService.userUpdated;
+    },function(newVal,oldVal){
+        //console.log(newVal,oldVal,userService.userUpdated);
+        if(userService.userUpdated)
+             groupService.getGroupList(userService.user._id);
+    });
     
     $scope.logout = function(){
         alertService.confirm('Are you sure to log out?')
@@ -43,6 +64,8 @@ MetronicApp.controller('PageHeadController', ['$scope', function($scope) {
         Demo.init(); // init theme panel
     });
 }]);
+
+
 
 /* Setup Layout Part - Theme Panel */
 MetronicApp.controller('ThemePanelController', ['$scope', function($scope) {    
@@ -88,5 +111,10 @@ MetronicApp.controller('AlertController', function($scope, content, options, typ
         
     if(options.title)
         $scope.title = options.title;
+    
+});
+
+
+MetronicApp.controller('WelcomeController', function($scope) {
     
 });

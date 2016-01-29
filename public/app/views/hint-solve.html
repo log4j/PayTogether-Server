@@ -1,0 +1,43 @@
+
+<div class="modal-body" style="padding:0;">
+    <div class="portlet box dark" style="margin:0px;">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-gift"></i> Group Information </div>
+            <div class="tools">
+                <a href="#" class="remove" ng-click="$dismiss()"> </a>
+            </div>
+        </div>
+        <div class="portlet-body bg-dark">
+            <div class="mt-element-step">
+                <div class="row step-no-background">
+                    <div class="mt-step-desc">
+                        <div class="caption-desc font-grey-cascade">Here is a possible solution to balance every member.</div>
+                        <br/> </div>
+                    <div class="col-md-4 mt-step-col" 
+                    ng-class="{'active':$index==current,'done':$index<current,'bg-blue-chambray':$index==current}"
+                    ng-repeat="step in solutions track by $index">
+                        <div class="mt-step-number font-grey">{{$index+1}}</div>
+                        <div class="mt-step-title uppercase font-grey">{{step.from.displayName}}</div>
+                        <div class="mt-step-content font-grey-cascade"><strong style="color:#E7505A!important">{{step.amount | currency:"$":2}}</strong> to {{step.to.displayName}}</div>
+                    </div>
+                    
+                    <div class="col-md-12 mt-step-col done" 
+                    ng-if="solutions.length==0">
+                        <!--<div class="mt-step-number font-grey"></div>-->
+                        <div class="mt-step-title uppercase font-grey">Congratulation!</div>
+                        <div class="mt-step-content font-grey-cascade">Already Balanced!</div>
+                    </div>
+                    
+                </div>
+                <br/>
+            </div>
+            <div class="row text-center margin-bottom-10">
+                <a class="btn red btn-outline btn-circle " ng-if="solutions.length>0"
+                    ng-click="nextStep()">Click Here if you finish Step {{current+1}}</a>
+                <a class="btn red btn-outline btn-circle " ng-if="solutions.length==0"
+                    ng-click="$dismiss()">Go Back</a>
+            </div>
+        </div>
+    </div>
+</div>

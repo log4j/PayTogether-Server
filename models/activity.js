@@ -4,7 +4,7 @@ var utility = require('utility');
 var ObjectId = Schema.ObjectId;
 
 
-var PaySchema = new Schema({
+var ActivitySchema = new Schema({
     group: {
         type: ObjectId
     },
@@ -12,15 +12,13 @@ var PaySchema = new Schema({
         type: ObjectId
     },
     to: {
-        type: [Schema.Types.ObjectId]
-    },
-    split_percentage : {
-        type: [Number]
-    },
-    split_amount : {
-        type: [Number]
+        type: [Schema.Types.Mixed]
     },
     is_pay: {
+        type: Boolean,
+        default: true
+    },
+    share_by_percentage: {
         type: Boolean,
         default: true
     },
@@ -28,9 +26,13 @@ var PaySchema = new Schema({
         type: Number,
         default: 0
     },
-    memo: {
+    name: {
         type: String,
         defualt: ''
+    },
+    date: {
+        type: String,
+        default: ''  
     },
     create_at: {
         type: Date,
@@ -42,11 +44,11 @@ var PaySchema = new Schema({
     }
 });
 
-PaySchema.index({
+ActivitySchema.index({
     group: 1
 }, {
     unique: false
 });
 
 
-mongoose.model('Pay', PaySchema);
+mongoose.model('Activity', ActivitySchema);

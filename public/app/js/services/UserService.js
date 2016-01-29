@@ -6,9 +6,8 @@ MetronicApp.factory('userService', function($http,$timeout,localStorageService,s
 
 
     this.user = null;
+    this.userUpdated = null;    
     
-    
-    console.log(settings);
     
     this.register = function (postData){
         return $http.post(settings.host+'/user',postData)
@@ -18,8 +17,12 @@ MetronicApp.factory('userService', function($http,$timeout,localStorageService,s
     this.getStoredUser = function(){
         var user = localStorageService.get('user');
         if(user){
+            //console.log(user,userService.user);
+            if(!userService.user || userService.user._id!=user._id)
+                userService.userUpdated = new Date();
+            
             userService.user = user;
-            console.log(user);
+            // console.log(user);
             return user;
         }
         return null;  
@@ -29,8 +32,9 @@ MetronicApp.factory('userService', function($http,$timeout,localStorageService,s
         return $http.post(settings.host + '/login', postData)
             .then(function(res){
                 if(res.data){
-                    console.log(res.data);
+                    // console.log(res.data);
                     userService.user = res.data.data;
+                    userService.userUpdated = new Date();
                     localStorageService.set('user',userService.user);
                     return commonResponseHandler(res);              
                 }else{

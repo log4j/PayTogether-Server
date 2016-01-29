@@ -43,3 +43,85 @@
     transition: all 0.3s;
 }
 
+
+
+.activity-remaining label {
+    font-weight: bold;
+}
+
+.activity-remaining.has-error label {
+    color: #e73d4a;
+}
+
+.activity-list .panel, .activity-list .panel-body {
+    border:none !important;
+}
+.activity-list .panel-heading {
+    padding: 8px;
+}
+
+.activity-list .panel-title {
+    color: #82949a;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.activity-list .panel-title .label {
+    font-size: 13px;
+    /* padding: 2px 5px; */
+    position: relative;
+    left: 0;
+    margin-top: -8px;
+    margin-bottom: -8px;
+    height: 30px;
+    width: 30px;
+    padding: 4px;
+    margin-left: -8px;
+    display: inline-block;
+    line-height: 22px;
+}
+
+.label-activity-span{
+    margin-left: 5px;
+}
+
+.progress-activity {
+    height: 30px;
+    margin-bottom: 10px;
+}
+
+.progress-activity span{
+    line-height: 30px;
+}
+
+[ng-if],
+[ng-show],
+[ng-hide] ,
+[ui-view]
+{
+    -webkit-transition: none !important;
+    transition: none !important;
+    -webkit-animation: none 0s;
+    animation: none 0s;
+}
+
+
+.item-in-fullscreen {
+    display:none;
+}
+
+.portlet-fullscreen .item-in-fullscreen{
+    display: table-cell;
+}
+
+.portlet-fullscreen{
+    padding: 80px !important;
+    z-index: 10024 !important;
+}
+
+.portlet-fullscreen .slimScrollDiv{
+    height: 60% !important;
+}
+.portlet-fullscreen .scroller{
+    height: 100% !important;
+}

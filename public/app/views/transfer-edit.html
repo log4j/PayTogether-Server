@@ -1,0 +1,85 @@
+
+<div class="modal-body" style="padding:0;">
+    <div class="portlet box {{group.color}}" style="margin:0px;">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-gift"></i> Activity Edit </div>
+            <div class="tools">
+                <a href="#" class="remove" ng-click="$dismiss()"> </a>
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <form role="form" class="form-horizontal" ng-submit="submitActivity()">
+                <div class="form-body">               
+                    
+                    
+                    <div class="form-group" ng-class="{'has-error':errors.from}">
+                        <label class="col-md-3 control-label">From</label>
+                        <div class="col-md-9 color-selectd">
+                            <ui-select ng-model="activity.from" theme="bootstrap" ng-change="errors.from=false;">
+                                <ui-select-match placeholder="Select or search a person in the group">
+                                    {{$select.selected.displayName}} 
+                                    <small  class="">{{$select.selected.tag}}</small>
+                                </ui-select-match>
+                                <ui-select-choices ui-disable-choice="user._id==activity.to._id" repeat="user in group.users | filter: $select.search">             
+                                    <span ng-bind-html="user.displayName | highlight: $select.search" ></span>
+                                    <small  class="bg-" ng-bind-html="user.tag | highlight: $select.search"></small>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error':errors.to}">
+                        <label class="col-md-3 control-label">To</label>
+                        <div class="col-md-9 color-selectd">
+                            <ui-select ng-model="activity.to" theme="bootstrap" ng-change="errors.to=false;">
+                                <ui-select-match placeholder="Select or search a person in the group">
+                                    {{$select.selected.displayName}} 
+                                    <small  class="">{{$select.selected.tag}}</small>
+                                </ui-select-match>
+                                <ui-select-choices ui-disable-choice="user._id==activity.from._id" repeat="user in group.users | filter: $select.search">             
+                                    <span ng-bind-html="user.displayName | highlight: $select.search" ></span>
+                                    <small  class="bg-" ng-bind-html="user.tag | highlight: $select.search"></small>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error':errors.amount}">
+                        <label class="col-md-3 control-label">Amount</label>
+                        <div class="col-md-9">
+                            <div class="input-icon right">
+                                <input type="number" step="any" class="form-control" ng-model="activity.amount" ng-change="summary();errors.amount=false;"> </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error':errors.name}">
+                        <label class="col-md-3 control-label">Note</label>
+                        <div class="col-md-9">
+                            <div class="input-icon right">
+                                <input type="text" class="form-control" ng-model="activity.name" ng-change="onNameChange();errors.name=false;"> </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Date</label>
+                        <div class="col-md-9">
+                            <input class="form-control  date-picker" ng-model="activity.date" size="16" type="text"  />
+                            <!--<span class="help-block"> Select date </span>-->
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-offset-4 col-md-8">
+                            <button type="button" class="btn default" ng-click="cancel()">Cancel</button>
+                            <button type="submit" class="btn blue">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    ComponentsDateTimePickers.init(); // init todo page
+</script>

@@ -151,11 +151,12 @@ exports.getUserList = function (req, res, next) {
 
     User.find(
         query,
-        'firstname lastname username email gender school avatar avatar_url description tags last_login rent_start rent_duration',
         function (err, users) {
             if (err) {
                 res.json(Object.assign(Results.ERR_DB_ERR,{msg:err}));
             } else {
+                
+                console.log(users[0].age,users[0].displayName);
                 res.json({
                     result: true,
                     data: users

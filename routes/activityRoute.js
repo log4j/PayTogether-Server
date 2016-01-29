@@ -13,35 +13,37 @@ var EventProxy = require('eventproxy');
 var tools = require('../common/tools');
 var Results = require('./commonResult');
 
-var Pay = require('../models').Pay;
+var Activity = require('../models').Activity;
 var Group = require('../models').Group;
 
 var fs = require('fs');
 
 exports.createItem = function (req, res, next){
-    var pay = new Pay();
-    pay.group = req.body.group;
-    pay.from = req.body.from;
-    pay.to = req.body.to;
-    pay.split_percentage = req.body.split_percentage;
-    pay.split_amount = req.body.split_amount;
-    pay.is_pay = req.body.is_pay;
-    pay.amount = req.body.amount;
-    pay.memo = req.body.memo;
+    var activity = new Activity();
+    activity.group = req.body.group;
+    activity.from = req.body.from;
+    activity.to = req.body.to;
+    activity.users = req.body.users;
+    activity.share_by_percentage = req.body.share_by_percentage;
+    activity.amount = req.body.amount;
+    activity.name = req.body.name;
+    activity.is_pay = req.body.is_pay;
+    if(req.body.date)
+        activity.date = req.body.date;
     
-    pay.save(function(err,item){
+    activity.save(function(err,item){
         if(err){
-            res.json(Results.ERR_DB_ERR);
+            res.json(Object.assign(Results.ERR_DB_ERR,{msg:err}));
         }else{
             //update Group
-            Group.findById(pay.group, function(groupErr, item){
+            Group.findById(activity.group, function(groupErr, group){
                 if(groupErr)
-                    return res.json(Results.ERR_DB_ERR);
+                    return res.json(Object.assign(Results.ERR_DB_ERR,{msg:groupErr}));
                     
-                Group.pays.push(item._id);
-                Group.save(function(groupSaveErr){
+                group.activities.push(activity._id);
+                group.save(function(groupSaveErr){
                     if(groupSaveErr)
-                        return res.json(Results.ERR_DB_ERR);
+                        return res.json(Object.assign(Results.ERR_DB_ERR,{msg:groupSaveErr}));
                         
                     return res.json({result:true,data:item}); 
                 });
@@ -57,7 +59,7 @@ exports.getItem = function (req, res, next) {
 
     var itemId = req.param('id');
     if (itemId) {
-        var query = Pay.findOne({'order_no':itemId});
+        var query = Activity.findOne({'order_no':itemId});
         query.populate('items.commodity','name price images','Commodity');
         query.exec(function(err,item){
             if(err){
@@ -85,10 +87,10 @@ exports.getList = function (req, res, next) {
         return res.json(Results.ERR_PARAM_ERR);
     }
 
-    var query = Pay.find({"group":req.query.group});
+    var query = Activity.find({"group":req.query.group});
     //query.populate('user','lastname avatar');
-    query.populate('from','firstname lastname avatar','User');
-    query.populate('to','firstname lastname avatar','User');
+    query.populate('from','username firstname displayName tag lastname avatar invisible','User');
+    query.populate('to.user','username firstname displayName tag lastname avatar invisible','User');
     query.sort({create_at:-1});
     query.exec(function(err,list){
         if(err)
@@ -104,7 +106,7 @@ exports.updateItem = function (req, res, next){
         return res.json(Results.ERR_PARAM_ERR);
     }
 
-    Pay.findById(id,function(err,pay){
+    Activity.findById(id,function(err,pay){
         if(err)
             return res.json(Results.ERR_DB_ERR);
         
@@ -120,8 +122,11 @@ exports.updateItem = function (req, res, next){
             pay.is_pay = req.body.is_pay;
         if(req.body.amount)
             pay.amount = req.body.amount;
-        if(req.body.memo)
-            pay.memo = req.body.memo;
+        if(req.body.name)
+            pay.name = req.body.name;
+        if(req.body.date)
+            pay.date = req.body.date;
+    
     
         pay.save(function(saveErr,saveItem){
             if(saveErr){
@@ -137,10 +142,32 @@ exports.deleteItem = function(req, res, next){
     if(!id){
         return res.json(Results.ERR_PARAM_ERR);
     }
-    Pay.findById(id).remove(function(err){
-        if(err)
-            return res.json(Results.ERR_DB_ERR);
-        return res.json({result:true});
-    })
+    Activity.findById(id,function(activityErr, activity){
+        
+        if(activityErr)
+            return res.json(Object.assign(Results.ERR_DB_ERR,{msg:activityErr}));
+            
+        activity.remove(function(err){
+            if(err)
+                return res.json(Object.assign(Results.ERR_DB_ERR,{msg:err}));
+            
+            console.log('remove activity',activity);
+            
+            Group.findById(activity.group,function(err, group){
+                for(var i=0;i<group.activities.length;i++)
+                    if(group.activities[i]==id){
+                        group.activities.splice(i,1);
+                        break;
+                    }
+                group.save(function(groupSaveErr){
+                    if(err)
+                        return res.json(Object.assign(Results.ERR_DB_ERR,{msg:groupSaveErr}));
+                    else
+                        return res.json({result:true});
+                })
+            })    
+            
+        })  
+    });
 
 };

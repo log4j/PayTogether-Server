@@ -1,4 +1,5 @@
-angular.module('MetronicApp').controller('DashboardController', function($rootScope, $scope, $http, $timeout, alertService) {
+angular.module('MetronicApp').controller('DashboardController', function($rootScope, $state, $scope, $http,
+ $timeout, alertService, userService) {
     $scope.$on('$viewContentLoaded', function() {   
         // initialize core components
         //App.initAjax();
@@ -9,6 +10,11 @@ angular.module('MetronicApp').controller('DashboardController', function($rootSc
     $rootScope.settings.layout.pageBodySolid = false;
     $rootScope.settings.layout.pageSidebarClosed = false;
     
+    if(userService.getStoredUser()){
+        
+    }else{
+        $state.go('login');
+    }
     
     $scope.testAlert = function(){
         alertService.alert('this is a test alert message!','test title')

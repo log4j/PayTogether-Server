@@ -111,12 +111,58 @@ MetronicApp.factory('settings', ['$rootScope', function($rootScope) {
         assetsPath: '../assets',
         globalPath: '../assets/global',
         layoutPath: '../assets/layouts/layout3',
-        host: 'http://192.168.99.106:4000'
+        host: 'http://localhost:4000'
     };
 
     $rootScope.settings = settings;
 
     return settings;
+}]);
+
+/* Setup global utils */
+MetronicApp.factory('utils', ['$rootScope', function($rootScope) {
+    // supported languages
+    var utils = {
+        prepareUsersInfo : function(users){
+            for(var i=0;i<users.length;i++){
+                var user = users[i];
+                if(user.invisible){
+                    if(user.firstname)
+                        user.displayName = user.firstname;
+                    else
+                        user.displayName = user.username;
+                    user.tag = '';
+                }else{
+                    if(user.firstname || user.lastname){
+                        user.displayName = user.firstname+' '+user.lastname;
+                    }else{
+                        user.displayName = user.username;
+                    }
+                    user.tag = user.email;
+                }
+            }
+        },
+        prepareUserInfo : function(user){
+            if(user.invisible){
+                if(user.firstname)
+                    user.displayName = user.firstname;
+                else
+                    user.displayName = user.username;
+                user.tag = '';
+            }else{
+                if(user.firstname || user.lastname){
+                    user.displayName = user.firstname+' '+user.lastname;
+                }else{
+                    user.displayName = user.username;
+                }
+                user.tag = user.email;
+            }
+        }
+    };
+
+    // $rootScope.settings = settings;
+
+    return utils;
 }]);
 
 /* Setup App Main Controller */
@@ -137,7 +183,7 @@ initialization can be disabled and Layout.init() should be called on page load c
 /* Setup Rounting For All Pages */
 MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
     // Redirect any unmatched url
-    $urlRouterProvider.otherwise("/dashboard.html");  
+    $urlRouterProvider.otherwise("/welcome");  
     
     $stateProvider
     
@@ -162,6 +208,23 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                             '../assets/pages/scripts/login-4.js',
                             
                             'js/controllers/LoginController.js',
+                        ] 
+                    });
+                }]
+            }
+        })
+        .state('welcome', {
+            url : "/welcome",
+            templateUrl : "views/welcome.html",
+            data: {contentOnly:true,bodyStyle:'login'},
+            controller : "WelcomeController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'MetronicApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                        files: [
+//                            'js/controllers/LoginController.js',
                         ] 
                     });
                 }]
@@ -210,6 +273,32 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                             // '../assets/global/plugins/jquery.sparkline.min.js',
                             // '../assets/pages/scripts/dashboard.min.js',
                             'js/controllers/GroupController.js',
+                        ] 
+                    });
+                }]
+            }
+        })
+        
+        .state('group-detail', {
+            url: "/group/:groupId",
+            templateUrl: "views/group-detail.html",            
+            data: {pageTitle: 'Group List'},
+            controller: "GroupDetailController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'MetronicApp',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                        files: [
+                            // '../assets/global/plugins/morris/morris.css',                            
+                            // '../assets/global/plugins/morris/morris.min.js',
+                            // '../assets/global/plugins/morris/raphael-min.js',                            
+                            // '../assets/global/plugins/jquery.sparkline.min.js',
+                            // '../assets/pages/scripts/dashboard.min.js',
+                            '../assets/pages/scripts/components-date-time-pickers.min.js',
+
+                            'js/controllers/GroupController.js',
+                            'js/controllers/ActivityController.js',
                         ] 
                     });
                 }]
