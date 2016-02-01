@@ -156,7 +156,7 @@ exports.getUserList = function (req, res, next) {
                 res.json(Object.assign(Results.ERR_DB_ERR,{msg:err}));
             } else {
                 
-                console.log(users[0].age,users[0].displayName);
+               // console.log(users[0].age,users[0].displayName);
                 res.json({
                     result: true,
                     data: users

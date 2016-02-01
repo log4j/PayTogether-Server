@@ -156,9 +156,10 @@
                                 <div class="label label-sm" ng-class="{'label-danger':activity.is_pay,'label-success':!activity.is_pay}">
                                         <i class="fa" ng-class="{'fa-credit-card':activity.is_pay,'fa-exchange':!activity.is_pay}"></i>
                                 </div>
-                                <span class="label-activity-span" ng-if="activity.is_pay">{{activity.from.displayName}} paied {{activity.amount | currency:'$':2}} for {{activity.name}}</span>
+                                <span class="label-activity-span" ng-if="activity.is_pay">{{activity.from.displayName}} paied {{activity.amount | currency:'$':2}} for {{activity.name}} </span>
                                 <span class="label-activity-span" ng-if="!activity.is_pay">{{activity.from.displayName}} transfer {{activity.amount | currency:'$':2}} to {{activity.to[0].user.displayName}}</span>
                                 <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': activity.status.open, 'glyphicon-chevron-right': !activity.status.open}"></i>
+                                <div class="date pull-right">{{activity.date}}</div>
                             </uib-accordion-heading>
                             <uib-progress class="progress-striped active progress-activity" max="activity.amount" ng-init="types=['success','info','warning','danger']" animate="true">
                                 <uib-bar ng-repeat="bar in activity.to track by $index" value="bar.final" type="{{types[$index%4]}}">
@@ -190,7 +191,77 @@
     
     
     <div class="row">
-        
+        <div class="col-md-12 col-sm-12">
+            <!-- BEGIN PORTLET-->
+            <div class="portlet light bordered ">
+                <div class="portlet-title">
+                    <div class="caption caption-md">
+                        <i class="icon-bar-chart font-red"></i>
+                        <span class="caption-subject font-red bold uppercase">Activity Stats</span>
+                        <span class="caption-helper hide">weekly stats...</span>
+                    </div>
+                    <div class="actions" ng-if="true">
+                         <!--<a class="btn red btn-outline btn-circle btn-sm" ng-click="showHintSolve()">Hint to Balance All</a>-->
+                        <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="#"> </a>
+                    </div>
+                </div>
+                <div class="portlet-body" >
+                    <div class="row number-stats margin-bottom-30" ng-if="false">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="stat-left">
+                                <div class="stat-chart">
+                                    <!-- do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break -->
+                                    <div id="sparkline_bar"></div>
+                                </div>
+                                <div class="stat-number">
+                                    <div class="title"> Total </div>
+                                    <div class="number"> 2460 </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="stat-right">
+                                <div class="stat-chart">
+                                    <!-- do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break -->
+                                    <div id="sparkline_bar2"></div>
+                                </div>
+                                <div class="stat-number">
+                                    <div class="title"> New </div>
+                                    <div class="number"> 719 </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-scrollable table-scrollable-borderless">
+                        <table class="table table-hover table-striped table-light">
+                            <thead>
+                                <tr class="uppercase">
+                                    <th class="text-center" ng-repeat="title in stats.title  track by $index"> {{title}} </th>
+                                    <th class="text-center">Date</th>
+                                    <th class="text-center">Type</th>
+                                </tr>
+                            </thead>
+                            <tr ng-repeat="record in stats.data track by $index">
+                                <td class="text-center"> {{record.name}} </td>
+                                
+                                <td class="text-center" ng-repeat="item in record.data  track by $index">
+                                    {{item}}
+                                </td>
+                                   
+                                <td class="text-center"> <span class="font-green bold"> {{record.amount}} </span> </td>
+                                <td class="text-center"> {{record.from}} </td>
+                                <td class="text-center"> <span class="grey-gallery"> {{record.date}} </span> </td>
+                                <td class="text-center">
+                                    <span class="label label-sm" ng-class="{'label-success':record.is_pay,'label-warning':!record.is_pay}"> {{record.type}} </span>
+                                </td>
+                            </tr>
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- END PORTLET-->
+        </div>
         
     </div>
 </div>

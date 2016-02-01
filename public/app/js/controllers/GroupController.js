@@ -210,7 +210,7 @@ userService, optionService, growl, groupService) {
 
 
 MetronicApp.controller('GroupDetailController', 
-function($scope, $stateParams, $http, $state, $timeout, $uibModal,
+function($scope, $stateParams, $http, $state, $timeout, $uibModal, $filter,
 userService, optionService, growl, groupService, alertService, activityService) {
     // console.log($stateParams);
     $scope.groupId = $stateParams.groupId;
@@ -256,6 +256,7 @@ userService, optionService, growl, groupService, alertService, activityService) 
             $scope.group.users[i].totalPaid = 0;
             $scope.group.users[i].totalSpent = 0;
             $scope.group.users[i].totalReceived = 0;
+            $scope.group.users[i].activityHistory = [];
             userMap[$scope.group.users[i]._id] = $scope.group.users[i];
         }
             
@@ -271,11 +272,30 @@ userService, optionService, growl, groupService, alertService, activityService) 
                     userMap[act.to[j].user._id].totalSpent+=act.to[j].final;
                 else
                     userMap[act.to[j].user._id].totalReceived+=act.to[j].final;
+                
+                
             }
             //total amount
             if(act.is_pay)
                 $scope.group.totalSpent += act.amount;
             //else
+            
+            
+            
+            //if this is transfer, add 0 to others
+            if(!act.is_pay){
+                for(var k=0;k<$scope.group.users.length;k++){
+                    if($scope.group.users[k]._id == act.to[0].user._id)
+                        $scope.group.users[k].activityHistory.push(act.to[0].final);
+                    else
+                        $scope.group.users[k].activityHistory.push(0);
+                }
+            }else{
+                for(var j=0;j<act.to.length;j++){
+                    userMap[act.to[j].user._id].activityHistory.push(act.to[j].final);
+                }
+            }
+            
             
         }
         
@@ -288,6 +308,43 @@ userService, optionService, growl, groupService, alertService, activityService) 
         
         // console.log($scope.group);
         // console.log($scope.activities);
+        
+        //build activity stats data
+        var stats = {
+            title:['What for'],
+            data:[]
+        };
+        
+        for(var i=0;i<$scope.activities.length;i++){
+            stats.data.push({
+                from:$scope.activities[i].from.displayName,
+                amount:$filter('currency')($scope.activities[i].amount, '$', 2),
+                name:$scope.activities[i].name,
+                type:$scope.activities[i].is_pay?'Pay':'Transfer',
+                is_pay: $scope.activities[i].is_pay,
+                date: $scope.activities[i].date,
+                data:[]
+            });   
+        }
+        
+        for(var i=0;i<$scope.group.users.length;i++){
+            var user = $scope.group.users[i];
+            
+            stats.title.push(user.displayName);
+            
+            
+            for(var j=0;j<$scope.activities.length;j++){
+                stats.data[j].data.push($filter('currency')(user.activityHistory[j], '$', 2));   
+            }
+        }
+        
+        stats.title.push('Amount');
+        stats.title.push('Paid By');
+        
+        console.log(stats);
+        
+        $scope.stats = stats;
+        
         
     }
     

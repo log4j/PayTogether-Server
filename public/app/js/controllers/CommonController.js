@@ -116,5 +116,5 @@ MetronicApp.controller('AlertController', function($scope, content, options, typ
 
 
 MetronicApp.controller('WelcomeController', function($scope) {
-    
+    console.log("hahaha");
 });

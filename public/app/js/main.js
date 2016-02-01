@@ -183,14 +183,14 @@ initialization can be disabled and Layout.init() should be called on page load c
 /* Setup Rounting For All Pages */
 MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
     // Redirect any unmatched url
-    $urlRouterProvider.otherwise("/welcome");  
+    $urlRouterProvider.otherwise("/dashboard");  
     
     $stateProvider
     
         .state('login', {
             url : "/login",
             templateUrl : "views/login.html",
-            data: {contentOnly:true,bodyStyle:'login'},
+            data: {contentOnly:true,bodyStyle:'login',noHeader:true,noPageHead:true},
             controller : "LoginController",
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
@@ -216,7 +216,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         .state('welcome', {
             url : "/welcome",
             templateUrl : "views/welcome.html",
-            data: {contentOnly:true,bodyStyle:'login'},
+            data: {contentOnly:false,noPageHead:true,noHeader:false,noPageHeaderMenu:true,bodyStyle:'login'},
             controller : "WelcomeController",
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
@@ -224,7 +224,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                         name: 'MetronicApp',
                         insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
                         files: [
-//                            'js/controllers/LoginController.js',
+                           'js/controllers/LoginController.js',
                         ] 
                     });
                 }]
