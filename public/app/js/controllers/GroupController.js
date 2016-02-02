@@ -79,6 +79,26 @@ userService, optionService, growl, groupService) {
         users: [{username:userService.user.username,_id:userService.user._id,order:1, status:'verified',type:'self'}]
     }
     
+    $scope.doNothing = function(type,username) {  
+        var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+        if( keyCode == 13 ) {
+            if(!e) var e = window.event;
+
+            e.cancelBubble = true;
+            e.returnValue = false;
+
+            if (e.stopPropagation) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+            
+            if(type==="addUser"){
+                $scope.addUser(username);
+            }
+        
+        }
+    }
+    
     $scope.addUser = function(username){
         //check if username already exists in users
         for(var i=0;i<$scope.group.users.length;i++){

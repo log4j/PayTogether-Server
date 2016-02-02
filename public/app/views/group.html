@@ -28,7 +28,7 @@
                     <i class="fa fa-{{group.icon}}"></i>
                 </div>
                 <div class="details">
-                    <div class="number"> 1349 </div>
+                    <div class="number"> {{group.userSpent | currency:'$':2}} </div>
                     <div class="desc"> {{group.name}} </div>
                 </div>
                 <a class="more" href="#" ng-click="showDetail(group)"> View more

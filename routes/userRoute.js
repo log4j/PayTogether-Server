@@ -180,6 +180,7 @@ exports.getUser = function (req, res, next) {
                         id:user.id,
                         first_name: user.firstname,
                         last_name: user.lastname,
+                        displayName : user.displayName,
                         gender: user.gender,
                         avatar: user.avatar,
                         avatar_url: user.avatar_url,

@@ -1,3 +1,4 @@
 node_modules
 public/app_backup
 public/app/assets_backup
+npm-debug.log

@@ -31,7 +31,7 @@
                         <label class="col-md-4 control-label">Group Name</label>
                         <div class="col-md-8">
                             <div class="input-icon right">
-                                <input type="text" class="form-control" ng-model="group.name" ng-change="onNameChange()"> </div>
+                                <input type="text" class="form-control" ng-keydown="doNothing()" ng-model="group.name" ng-change="onNameChange()"> </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -49,7 +49,7 @@
                                 </ui-select-choices>
                             </ui-select>
                             <span class="input-group-btn">
-                                <button ng-click="randomColor()" class="btn btn-default">
+                                <button ng-click="randomColor()" type="button" class="btn btn-default">
                                     <span class="fa fa-refresh"></span>
                                 </button>
                             </span>
@@ -70,7 +70,7 @@
                                 </ui-select-choices>
                             </ui-select>
                             <span class="input-group-btn">
-                                <button ng-click="randomIcon()" class="btn btn-default">
+                                <button type="button"ng-click="randomIcon()" class="btn btn-default">
                                     <span class="fa fa-refresh"></span>
                                 </button>
                             </span>
@@ -81,7 +81,7 @@
                         <label class="col-md-4 control-label">Add new member</label>
                         <div class="col-md-8">
                             <div class="input-group">
-                                <input type="text" class="form-control" ng-model="keyword"> 
+                                <input type="text" class="form-control" ng-keydown="doNothing('addUser',keyword)" ng-model="keyword"> 
                                 <span class="input-group-btn">
                                     <button class="btn blue" type="button" ng-click="addUser(keyword)">Add</button>
                                 </span>

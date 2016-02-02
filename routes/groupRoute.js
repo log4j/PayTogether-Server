@@ -123,21 +123,77 @@ exports.getItem = function (req, res, next) {
  */
 exports.getList = function (req, res, next) {
 
+    var queryId = req.query.user;
+    
     if(!req.query.user){
         return res.json(Results.ERR_PARAM_ERR);
     }
 
     var query = User.findById(req.query.user);
     //query.populate('user','lastname avatar');
-    query.populate('groups','name users color icon','Group');
-    query.sort({create_at:-1});
+    //query.populate('groups','name users color icon','Group');
+    
+    query.populate({
+        path: 'groups',
+        // match: /airline/,
+        select: 'name users color icon activities',
+        model: 'Group',
+        options: {sort: { 'create_at': -1 }}
+    })
+    
+    query.sort({create_at:1});
     query.exec(function(err,item){
         if(err)
             return res.json(Results.ERR_DB_ERR);
             
-        // Group.populate(item.groups)
+        Activity.populate(item,{
+            path: 'groups.activities',
+            select : 'amount name from to is_pay'
+        },function(actErr, acts){
+            // console.log(actErr);
+            // console.log(acts);
             
-        return res.json({result:true,data:item.groups});
+            /**
+             * calculate the total spent/paid/received for the querying member (id:queryId) in each group
+             */
+            var groups = [];
+            console.log(queryId);
+            for(var i=0;i<item.groups.length;i++){
+                var group = item.groups[i].toObject();
+                group.userSpent = 0;
+                group.userPaid = 0;
+                group.userReceived = 0;
+                
+                for(var j=0;j<group.activities.length;j++){
+                    var activity = group.activities[j];
+                    
+                    console.log(activity.from);
+                    console.log(queryId);
+                    console.log(activity.from === queryId);
+                    console.log(activity.from == queryId);
+                    console.log(activity.amount);
+                    
+                    if(activity.from == queryId)
+                        group.userPaid += activity.amount;
+
+                    for(var k=0;k<activity.to.length;k++){
+                        if(activity.to[k].user == queryId){
+                            if(activity.is_pay)
+                                group.userSpent += activity.to[k].final;
+                            else
+                                group.userReceived += activity.to[k].final;
+                        }
+                    }
+                    
+                }
+                //console.log(group);
+                groups.push(group);
+            }
+            
+            return res.json({result:true,data:groups});
+        })
+            
+        // return res.json({result:true,data:item.groups});
     });
 };
 

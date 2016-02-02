@@ -25,8 +25,12 @@ alertService, groupService) {
         return userService.userUpdated;
     },function(newVal,oldVal){
         //console.log(newVal,oldVal,userService.userUpdated);
-        if(userService.userUpdated)
-             groupService.getGroupList(userService.user._id);
+        if(userService.userUpdated){
+            groupService.getGroupList(userService.user._id);
+            $scope.user = userService.user;
+            console.log($scope.user);
+        }
+             
     });
     
     $scope.logout = function(){
