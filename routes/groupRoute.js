@@ -186,6 +186,13 @@ exports.getList = function (req, res, next) {
                     }
                     
                 }
+                
+                //round number value to X.XX
+                group.userSpent = parseFloat(group.userSpent.toFixed(2));
+                group.userPaid = parseFloat(group.userPaid.toFixed(2));
+                group.userReceived = parseFloat(group.userReceived.toFixed(2));
+                group.userOwned = group.userReceived + group.userSpent - group.userPaid;
+                
                 //console.log(group);
                 groups.push(group);
             }
@@ -203,13 +210,24 @@ exports.updateItem = function (req, res, next){
     if(!id){
         return res.json(Results.ERR_PARAM_ERR);
     }
+    
+    console.log('group:',id)
 
     Group.findById(id,function(err,group){
+        
+        
+        
         if(err)
             return res.json(Object.assign(Results.ERR_DB_ERR,{msg:err}));
         
         if(req.body.name)
-            group.from = req.body.name;
+            group.name = req.body.name;
+            
+        if(req.body.color)
+            group.color = req.body.color;
+            
+        if(req.body.icon)
+            group.icon = req.body.icon;
 
         if(req.body.fresh_users){
             group.fresh_users = req.body.fresh_users;
@@ -225,10 +243,10 @@ exports.updateItem = function (req, res, next){
                 existUser[group.users[i]] = 1;
             }
             for(var i=0;i<req.body.users.length;i++){
-                if(existUser[req.body.users[i]]){
-                    existUser[req.body.users[i]] = 2;
+                if(existUser[req.body.users[i]._id]){
+                    existUser[req.body.users[i]._id] = 2;
                 }else{
-                    toAddUser.push(req.body.users[i]);
+                    toAddUser.push(req.body.users[i]._id);
                 }
             }
             for(var i=0;i<group.users.length;i++){
@@ -236,16 +254,20 @@ exports.updateItem = function (req, res, next){
                     toRemoveUser.push(group.users[i]);
                 }
             }
-            group.users = req.body.users;
+            //group.users = req.body.users;
         }
 
         group.save(function(saveErr,saveItem){
+            
+            console.log(saveErr);
+            console.log(saveItem);
+            
             if(saveErr){
                 return res.json(Results.ERR_DB_ERR);
             }else{
                 if(toRemoveUser.length>0 || toAddUser.length>0){
                     var ep = EventProxy();
-                    ep.atfer('userUpdated',toRemoveUser.length+toAddUser.length,function(list){
+                    ep.after('userUpdated',toRemoveUser.length+toAddUser.length,function(list){
                         return res.json({result:true,data:saveItem});
                     });
                     ep.bind('error', function (err) {
@@ -296,22 +318,33 @@ exports.deleteItem = function(req, res, next){
     if(!id){
         return res.json(Results.ERR_PARAM_ERR);
     }
-    Group.findById(id).remove(function(err,item){
+    Group.findById(id, function(err, item){
         if(err)
             return res.json(Results.ERR_DB_ERR);
+        console.log(item);
         updateGroupInUsers(id,[],item.users,function(updateErr){
             if(updateErr)
                 return res.json(Results.ERR_DB_ERR);
-            return res.json({result:true});
+                
+            item.remove(function(removeErr){
+                if(err)
+                    return res.json(Results.ERR_DB_ERR);
+                else
+                    return res.json({result:true});
+            })
+            
         })
-    })
+    });
+    // Group.findById(id).remove(function(err,item){
+        
+    // })
 
 };
 
 function updateGroupInUsers (groupId,toAddUser,toRemoveUser,callback){
     if(toRemoveUser.length>0 || toAddUser.length>0){
         var ep = EventProxy();
-        ep.atfer('userUpdated',toRemoveUser.length+toAddUser.length,function(list){
+        ep.after('userUpdated',toRemoveUser.length+toAddUser.length,function(list){
             return callback(null);
         });
         ep.bind('error', function (err) {
@@ -325,7 +358,7 @@ function updateGroupInUsers (groupId,toAddUser,toRemoveUser,callback){
                 var newGroupList = [];
                 for(var j=0;j<targetUser.groups.length;j++)
                     if(targetUser.groups[j]!=groupId)
-                        newGroupList.push(targetUser.groups[i]);
+                        newGroupList.push(targetUser.groups[j]);
                 targetUser.groups = newGroupList;
                 targetUser.save(function(userSaveErr){
                     if(userSaveErr)

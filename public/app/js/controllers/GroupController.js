@@ -36,8 +36,7 @@ userService,growl,groupService) {
     }
     $scope.fetchGroups();
     
-    
-    $scope.items = [1,2,3];
+
     
     $scope.startCreateGroup = function(){
         var modalInstance = $uibModal.open({
@@ -49,9 +48,8 @@ userService,growl,groupService) {
             size: 'md',
             controller: 'GroupCreateController',
             resolve : {
-                items: function() {
-                    console.log('Init '+$scope.items);
-                    return $scope.items;
+                groupId: function() {
+                    return null;
                 }
             }
         });
@@ -67,16 +65,71 @@ userService,growl,groupService) {
 });
 
 angular.module('MetronicApp').controller('GroupCreateController', 
-function($rootScope, $scope, $http, $state, $timeout, $uibModal, items, 
+function($rootScope, $scope, $http, $state, $timeout, $uibModal, groupId, 
 userService, optionService, growl, groupService) {
     
  
     $scope.keyword = "";
     
-    $scope.group = {
-        color: 'blue',
-        icon: 'users',
-        users: [{username:userService.user.username,_id:userService.user._id,order:1, status:'verified',type:'self'}]
+    $scope.randomColor = function(){
+        $scope.group.color = optionService.randomColor();  
+    };
+    
+    
+    $scope.randomIcon = function(){
+        $scope.group.icon = optionService.randomIcon();  
+    };
+    
+    
+    
+    if(groupId){
+        groupService.getGroup(groupId)
+        .then(function(res){
+            if(res.result){
+                console.log(res.data);
+                // $scope.group = res.data;
+                // for(var i=0;i<$scope.group.users.length;i++){
+                //     var user = $scope.group.users[i];
+                //     // console.log(user);
+                //     $scope.memberFilters[user._id] = {
+                //         displayName: user.displayName,
+                //         selected : true
+                //     }
+                // }
+                
+                $scope.group = {
+                    _id: res.data._id,
+                    color: res.data.color,
+                    icon: res.data.icon,
+                    users:[],
+                    name: res.data.name,
+                    memberLocked : res.data.activities.length>=0
+                }
+                for(var i=0;i<res.data.users.length;i++){
+                    var user = res.data.users[i];
+                    $scope.group.users.push({
+                        username : user.displayName,
+                        _id: user._id,
+                        status: user.invisible?'fresh':'verified',
+                        type : user._id == userService.user._id?'self':''
+                    });
+                    
+                }
+                
+            }else{
+                $scope.$dismiss('Can not find that group!');
+            }
+        });
+    }else{
+        $scope.group = {
+            color: 'blue',
+            icon: 'users',
+            memberLocked: false,
+            users: [{username:userService.user.username,_id:userService.user._id,order:1, status:'verified',type:'self'}]
+        }
+        $scope.randomColor();
+        
+        $scope.randomIcon();
     }
     
     $scope.doNothing = function(type,username) {  
@@ -100,6 +153,10 @@ userService, optionService, growl, groupService) {
     }
     
     $scope.addUser = function(username){
+        
+        if(!username || username.trim()=="")
+            return;
+        
         //check if username already exists in users
         for(var i=0;i<$scope.group.users.length;i++){
             console.log(username);
@@ -174,6 +231,7 @@ userService, optionService, growl, groupService) {
         }
         
         var postData = {
+            _id : $scope.group._id,
             name : $scope.group.name,
             creator: userService.user._id,
             color: $scope.group.color,
@@ -194,12 +252,12 @@ userService, optionService, growl, groupService) {
         
         console.log(postData);
         
-        groupService.createGroupList(postData)
+        groupService.createOrEditGroupList(postData)
         .then(function(res){
             console.log('result:',res); 
             if(res.result){
                 growl.addSuccessMessage('Group created!');
-                $scope.$close(true);
+                $scope.$close(res);
             }else{
                 growl.addWarnMessage('Something happened!');
             }
@@ -208,16 +266,7 @@ userService, optionService, growl, groupService) {
     
     //console.log($scope.group);
     
-    $scope.randomColor = function(){
-        $scope.group.color = optionService.randomColor();  
-    };
-    $scope.randomColor();
-    
-    $scope.randomIcon = function(){
-        $scope.group.icon = optionService.randomIcon();  
-    };
-    $scope.randomIcon();
-    
+
     
     
     $scope.colors = optionService.colors;
@@ -241,14 +290,31 @@ userService, optionService, growl, groupService, alertService, activityService) 
         $state.go('login');
     }
     
+    $scope.memberFilters = {};
+    $scope.display = {
+        showTransfer: true,
+        showPay : true
+    }
     
-    groupService.getGroup($scope.groupId)
-    .then(function(res){
-        if(res.result){
-            $scope.group = res.data;
-            $scope.calculateSpending();
-        }
-    });
+    $scope.fetchGroup = function(){
+        groupService.getGroup($scope.groupId)
+        .then(function(res){
+            if(res.result){
+                $scope.group = res.data;
+                for(var i=0;i<$scope.group.users.length;i++){
+                    var user = $scope.group.users[i];
+                    // console.log(user);
+                    $scope.memberFilters[user._id] = {
+                        displayName: user.displayName,
+                        selected : true
+                    }
+                }
+                $state.current.data.pageTitle = 'Group: '+$scope.group.name;
+                $scope.calculateSpending();
+            }
+        });
+    };
+    $scope.fetchGroup();
     
     $scope.fetchActivities = function(){
         activityService.getActivityList($scope.groupId)
@@ -368,6 +434,32 @@ userService, optionService, growl, groupService, alertService, activityService) 
         
     }
     
+    $scope.startEditGroup = function(group){
+        var modalInstance = $uibModal.open({
+            animation: true,
+            backdrop: 'static',
+            keyboard: false,
+            windowTopClass: 'modal-no-border',
+            templateUrl : 'views/group-create.html',
+            size: 'md',
+            controller: 'GroupCreateController',
+            resolve : {
+                groupId: function() {
+                    return group._id;
+                }
+            }
+        });
+        
+        modalInstance.result.then(function(result){
+            //refresh page
+            $scope.fetchGroup();
+        },function(){
+            console.log('Modal dismessed at: ' + new Date()); 
+        });
+        
+    }
+    
+    
     $scope.startEditActivity = function(activity){
         var modalInstance = $uibModal.open({
             animation: true,
@@ -426,6 +518,24 @@ userService, optionService, growl, groupService, alertService, activityService) 
         });
         
     }
+    
+    $scope.removeGroup = function(group){
+        alertService.confirm('Are you sure to remove all group information?')
+        .then(function(confirmRes){
+            if(confirmRes){
+                console.log(confirmRes);
+                groupService.removeGroup(group._id)
+                .then(function(res){
+                    if(res.result){
+                        growl.addSuccessMessage('Group removed!');   
+                        $state.go('group');
+                    } else{
+                        growl.addWarnMessage('Something happened!Remove failed!')
+                    }
+                });
+            }
+        });
+    };
     
     $scope.startEditTransfer = function(activity){
         var modalInstance = $uibModal.open({
@@ -534,6 +644,7 @@ userService, optionService, growl, groupService, alertService, activityService) 
             $scope.fetchActivities();
         },function(){
             console.log('Modal dismessed at: ' + new Date()); 
+            $scope.fetchActivities();
         });
         
     } 
@@ -566,14 +677,16 @@ growl,group) {
     console.log(group);
     
     $scope.users = group.users;
+    var max = 999999;
     for(var i=0;i<$scope.users.length;i++){
         $scope.users[i].balance = $scope.users[i].totalPaid - $scope.users[i].totalSpent - $scope.users[i].totalReceived;
+        max += $scope.users[i].totalPaid;
     }
     
     var solutions = [];
     var pickLowestOne = function(){
-        var lowestNegative = group.totalSpent;
-        var lowestPositive = group.totalSpent;
+        var lowestNegative = max;
+        var lowestPositive = max;
         var lowestNegativeUser = null;
         var lowestPositiveUser = null;
         

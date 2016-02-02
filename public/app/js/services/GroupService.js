@@ -18,9 +18,15 @@ MetronicApp.factory('groupService', function($http,settings) {
         },errResponseHandler);
     }
     
-    this.createGroupList = function(postData){
-        return $http.post(settings.host+'/group',postData)
-        .then(commonResponseHandler,errResponseHandler);
+    this.createOrEditGroupList = function(postData){
+        if(postData._id){
+            return $http.put(settings.host+'/group/'+postData._id, postData)
+            .then(commonResponseHandler,errResponseHandler);
+        }else{
+            return $http.post(settings.host+'/group',postData)
+            .then(commonResponseHandler,errResponseHandler);
+        }
+        
     }
     
     this.getGroup = function(groupId){
@@ -49,6 +55,11 @@ MetronicApp.factory('groupService', function($http,settings) {
                 return {result:false};
             }
         },errResponseHandler);
+    }
+    
+    this.removeGroup = function(groupId){
+        return $http.delete(settings.host+'/group/'+groupId)
+        .then(commonResponseHandler,errResponseHandler);
     }
 
     return groupService;

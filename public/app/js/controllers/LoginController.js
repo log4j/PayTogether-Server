@@ -13,7 +13,7 @@ groupService) {
     
     //check user logged already?
     if(userService.getStoredUser()){
-        $state.go('dashboard');
+        $state.go('group');
     }
     
     
@@ -44,7 +44,7 @@ groupService) {
             // console.log(res);
             if(res.result){
                 //groupService.getGroupList(res.id);
-                $state.go('dashboard');
+                $state.go('group');
             }else{
                 if(res.err === 'ERR_INVALID_USER')
                     $scope.loginError = 'Can not find account with your username or email.';

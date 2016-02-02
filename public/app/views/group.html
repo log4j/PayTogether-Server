@@ -28,8 +28,10 @@
                     <i class="fa fa-{{group.icon}}"></i>
                 </div>
                 <div class="details">
-                    <div class="number"> {{group.userSpent | currency:'$':2}} </div>
-                    <div class="desc"> {{group.name}} </div>
+                    <div class="number"> {{group.name}} </div>
+                    <div class="desc" ng-show="group.userOwned==0"> You do not owe anything </div>
+                    <div class="desc" ng-show="group.userOwned<0"> You are owed <strong class="">{{-group.userOwned | currency:'$':2}}</strong> </div>
+                    <div class="desc" ng-show="group.userOwned>0"> You owe <strong class="">{{group.userOwned | currency:'$':2}}</strong> </div>
                 </div>
                 <a class="more" href="#" ng-click="showDetail(group)"> View more
                     <i class="m-icon-swapright m-icon-white"></i>

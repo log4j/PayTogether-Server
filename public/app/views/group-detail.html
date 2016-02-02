@@ -22,17 +22,36 @@
     <div class="row">
         
         <div class="col-md-6 col-sm-6">
-            <div class="dashboard-stat {{group.color}}">
-                <div class="visual">
-                    <i class="fa fa-{{group.icon}}"></i>
+            <div class="portlet light bordered ">
+                <div class="portlet-title">
+                    <div class="caption caption-md">
+                        <i class="icon-bar-chart font-red"></i>
+                        <span class="caption-subject font-red bold">Group Information</span>
+                    </div>
+                    <div class="actions" ng-if="true">
+                         <a class="btn blue btn-outline btn-circle btn-sm" ng-click="startEditGroup(group)">Edit Group</a>
+                         <a class="btn red btn-outline btn-circle btn-sm" ng-click="removeGroup(group)">Delete Group</a>
+                    </div>
                 </div>
-                <div class="details">
-                    <div class="number"> {{group.totalSpent | currency:"$":2}} </div>
-                    <div class="desc"> {{group.name}} </div>
+                <div class="portlet-body" >
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="dashboard-stat {{group.color}}">
+                                
+                                <div class="visual">
+                                    <i class="fa fa-{{group.icon}}"></i>
+                                </div>
+                                <div class="details">
+                                    <div class="number"> {{group.name}} </div>
+                                    <div class="desc"> (Group spent {{group.totalSpent | currency:"$":2}}) </div>
+                                </div>
+                                <a class="more" href="#" ng-click="startEditGroup(group)"> Edit Group Information
+                                    <i class="m-icon-swapright m-icon-white"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <a class="more" href="#" ng-click="showEdit(group)"> Edit Group Information
-                    <i class="m-icon-swapright m-icon-white"></i>
-                </a>
             </div>
             <!-- BEGIN PORTLET-->
             <div class="portlet light bordered ">
@@ -80,9 +99,9 @@
                                 <tr class="uppercase">
                                     <th colspan="2"> MEMBER </th>
                                     <th> PAID </th>
-                                    <th> USED </th>
+                                    <th class="item-in-fullscreen"> USED </th>
                                     <th class="item-in-fullscreen"> RECEIVED </th>
-                                    <th class="item-in-fullscreen"> SPENT </th>
+                                    <th > SPENT </th>
                                     <th > RATE </th>
                                     <th> BALANCE </th>
                                 </tr>
@@ -94,11 +113,11 @@
                                     <a href="javascript:;" class="primary-link">{{member.displayName}}</a>
                                 </td>
                                 <td> {{member.totalPaid | currency:"$":2}} </td>
-                                <td> {{member.totalReceived+member.totalSpent | currency:"$":2}} </td>
+                                <td class="item-in-fullscreen"> {{member.totalReceived+member.totalSpent | currency:"$":2}} </td>
                                 <td class="item-in-fullscreen"> {{member.totalReceived | currency:"$":2}} </td>
-                                <td class="item-in-fullscreen"> {{member.totalSpent | currency:"$":2}} </td>
+                                <td > {{member.totalSpent | currency:"$":2}} </td>
                                 <td >
-                                    <span class="bold font-green">{{member.totalSpent*100/group.totalSpent | currency:"":2}} %</span>
+                                    <span class="bold font-blue">{{member.totalSpent*100/group.totalSpent | currency:"":2}} %</span>
                                 </td>
                                 <td>
                                     <span class="bold " ng-class="{'font-red':member.totalPaid<member.totalSpent+member.totalReceived,
@@ -124,16 +143,26 @@
                         <span class="caption-subject font-green bold uppercase">Activities</span>
                     </div>
                     <div class="actions">
-                        <a class="btn green btn-outline btn-circle btn-sm" ng-click="startEditActivity()">Pay</a>
-                        <a class="btn red btn-outline btn-circle btn-sm" ng-click="startEditTransfer()">Transfer</a>
+                        <a class="btn green  btn-circle " ng-click="startEditActivity()">Pay</a>
+                        <a class="btn red  btn-circle " ng-click="startEditTransfer()">Transfer</a>
                         <div class="btn-group">
                             
                             <a class="btn btn-sm btn-default btn-circle" href="#" data-toggle="dropdown" dropdown-menu-hover data-close-others="true"> Filter By Member
                                 <i class="fa fa-angle-down"></i>
                             </a>
                             <div class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+                                <div class="md-checkbox" ng-repeat="member in memberFilters">
+                                    <input type="checkbox" id="for_check_member_filters_{{$index}}" ng-model="member.selected" 
+                                     class="md-check">
+                                    <label for="for_check_member_filters_{{$index}}">
+                                        <span></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span>{{member.displayName}}
+                                    </label>
+                                </div> 
+<!--                                            
                                 <label ng-repeat="member in group.users">
-                                    <input type="checkbox" /> {{member.displayName}}</label>
+                                    <input type="checkbox" /> {{member.displayName}}</label>-->
                                 <!--<label>
                                     <input type="checkbox" checked="" /> Membership</label>
                                 <label>
@@ -148,10 +177,16 @@
                     </div>
                 </div>
                 <div class="portlet-body activity-list">
+                    
+                                                
                     <div class="scroller" style="height: 320px;" data-always-visible="1" data-rail-visible="0">
+                        <div class="alert alert-info no-animation" ng-hide="activities.length>0">
+                            <strong>No records!</strong> You can click "Pay" or "Transfer" to add new activity.
+                        </div>
+                    
                         <uib-accordion close-others="true">
                            
-                            <uib-accordion-group is-open="activity.status.open" ng-repeat="activity in activities">
+                            <uib-accordion-group is-open="activity.status.open" ng-repeat="activity in activities" ng-show="memberFilters[activity.from._id].selected">
                             <uib-accordion-heading>
                                 <div class="label label-sm" ng-class="{'label-danger':activity.is_pay,'label-success':!activity.is_pay}">
                                         <i class="fa" ng-class="{'fa-credit-card':activity.is_pay,'fa-exchange':!activity.is_pay}"></i>
@@ -175,7 +210,7 @@
                             
                         
                     </div>
-                    <div class="scroller-footer">
+                    <div class="scroller-footer" ng-if="false">
                         <div class="btn-arrow-link pull-right">
                             <a href="#">See All Records</a>
                             <i class="icon-arrow-right"></i>
@@ -202,7 +237,36 @@
                     </div>
                     <div class="actions" ng-if="true">
                          <!--<a class="btn red btn-outline btn-circle btn-sm" ng-click="showHintSolve()">Hint to Balance All</a>-->
+                        
+                        <div class="btn-group">
+                            
+                            <a class="btn btn-sm btn-default btn-circle" href="#" data-toggle="dropdown" dropdown-menu-hover data-close-others="true"> Filter By Type
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <div class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+                                <div class="md-checkbox">
+                                    <input type="checkbox" id="for_check_display_pay" ng-model="display.showPay" 
+                                     class="md-check">
+                                    <label for="for_check_display_pay">
+                                        <span></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span>Pay
+                                    </label>
+                                </div> 
+                                <div class="md-checkbox">
+                                    <input type="checkbox" id="for_check_display_transfer" ng-model="display.showTransfer" 
+                                     class="md-check">
+                                    <label for="for_check_display_transfer">
+                                        <span></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span>Transfer
+                                    </label>
+                                </div> 
+                            </div>
+                        </div>
+                        
                         <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="#"> </a>
+                        
                     </div>
                 </div>
                 <div class="portlet-body" >
@@ -241,7 +305,7 @@
                                     <th class="text-center">Type</th>
                                 </tr>
                             </thead>
-                            <tr ng-repeat="record in stats.data track by $index">
+                            <tr ng-repeat="record in stats.data track by $index" ng-show="(record.is_pay&&display.showPay)||(!record.is_pay&&display.showTransfer)">
                                 <td class="text-center"> {{record.name}} </td>
                                 
                                 <td class="text-center" ng-repeat="item in record.data  track by $index">

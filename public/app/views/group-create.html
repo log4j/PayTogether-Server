@@ -81,9 +81,9 @@
                         <label class="col-md-4 control-label">Add new member</label>
                         <div class="col-md-8">
                             <div class="input-group">
-                                <input type="text" class="form-control" ng-keydown="doNothing('addUser',keyword)" ng-model="keyword"> 
+                                <input type="text" class="form-control" ng-keydown="doNothing('addUser',keyword)" ng-model="keyword" ng-disabled="group.memberLocked"> 
                                 <span class="input-group-btn">
-                                    <button class="btn blue" type="button" ng-click="addUser(keyword)">Add</button>
+                                    <button class="btn blue" type="button" ng-click="addUser(keyword)"  ng-disabled="group.memberLocked">Add</button>
                                 </span>
                             </div>
                         </div>
@@ -93,12 +93,13 @@
                             <div class="portlet box {{group.color}}" style="margin:0px;">
                                 <div class="portlet-title">
                                     <div class="caption">
-                                        <i class="fa fa-gift"></i> Members </div>
+                                        <i class="fa fa-gift"></i> Members  </div>
                                     <div class="tools hide">
                                         <a href="#" class="remove" ng-click="cancel()"> </a>
                                     </div>
                                 </div>
                                 <div class="portlet-body">
+                                    <div class="alert alert-danger" ng-if="group.memberLocked"><strong>Can not edit members when activity records exist.</strong></div>
                                     <div class="row">
                                         <div class="col-md-6" ng-repeat="member in group.users track by $index">
                                             <div class="note " 
@@ -109,7 +110,7 @@
                                                 <i class="fa fa-spinner" ng-class="{'fa-spin':member.status==='verifying'}" ng-show="member.status==='verifying'"></i>
                                                 <i class="fa fa-check-square" ng-show="member.status==='verified'"></i>
                                                 {{member.type==='self'?'(You)':''}}
-                                                <a class="btn fa fa-close" ng-hide='member.type=="self"' ng-click="removeUser($index)"></a>
+                                                <a class="btn fa fa-close" ng-hide='member.type=="self"' ng-click="removeUser($index)"  ng-disabled="group.memberLocked"></a>
                                             </div>
                                         </div>
                                         

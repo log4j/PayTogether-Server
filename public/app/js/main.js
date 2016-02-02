@@ -183,7 +183,7 @@ initialization can be disabled and Layout.init() should be called on page load c
 /* Setup Rounting For All Pages */
 MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
     // Redirect any unmatched url
-    $urlRouterProvider.otherwise("/dashboard");  
+    $urlRouterProvider.otherwise("/group");  
     
     $stateProvider
     
@@ -282,7 +282,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         .state('group-detail', {
             url: "/group/:groupId",
             templateUrl: "views/group-detail.html",            
-            data: {pageTitle: 'Group List'},
+            data: {pageTitle: 'Group'},
             controller: "GroupDetailController",
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {

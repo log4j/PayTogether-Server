@@ -1,6 +1,6 @@
 
 /* Setup Layout Part - Header */
-MetronicApp.controller('HeaderController', function($scope, $state, userService, 
+MetronicApp.controller('HeaderController', function($scope, $state, userService, $uibModal,$stateParams,
 alertService, groupService) {
     $scope.$on('$includeContentLoaded', function() {
         Layout.initHeader(); // init header
@@ -43,6 +43,37 @@ alertService, groupService) {
                 });
             }
         });
+    }
+    
+    $scope.startCreateGroup = function(){
+        var modalInstance = $uibModal.open({
+            animation: true,
+            backdrop: 'static',
+            keyboard: false,
+            windowTopClass: 'modal-no-border',
+            templateUrl : 'views/group-create.html',
+            size: 'md',
+            controller: 'GroupCreateController',
+            resolve : {
+                groupId: function() {
+                    return null;
+                }
+            }
+        });
+        
+        modalInstance.result.then(function(result){
+            //refresh page
+            // $scope.fetchGroups();
+            // $state.transitionTo($state.current, $stateParams, {
+            //     reload: true,
+            //     inherit: false,
+            //     notify: true
+            // });
+            $state.go('group-detail',{groupId:result.data._id});
+        },function(){
+            console.log('Modal dismessed at: ' + new Date()); 
+        });
+        
     }
 });
 

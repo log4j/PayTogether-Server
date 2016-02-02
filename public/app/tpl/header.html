@@ -3,7 +3,7 @@
     <div class="container">
         <!-- BEGIN LOGO -->
         <div class="page-logo">
-            <a href="#/dashboard">
+            <a href="#/group">
                 <img src="{{settings.layoutPath}}/img/logo-default.jpg" alt="logo" class="logo-default"> </a>
         </div>
         <!-- END LOGO -->
@@ -179,9 +179,9 @@
         <!-- DOC: Remove dropdown-menu-hover and data-close-others="true" attributes below to disable the dropdown opening on mouse hover -->
         <div class="hor-menu" >
             <ul class="nav navbar-nav">
-                <li class="active">
+                <!--<li class="active">
                     <a href="#" ui-sref="dashboard">Dashboard</a>
-                </li>
+                </li>-->
                 <li class="menu-dropdown mega-menu-dropdown ">
                     <a data-hover="megamenu-dropdown" ui-sref="group" data-close-others="true" data-toggle="dropdown" href="#" class="dropdown-toggle"> Groups
                         <i class="fa fa-angle-down"></i>
@@ -192,15 +192,15 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <ul class="mega-menu-submenu">
-                                            <li>
+                                            <!--<li>
                                                 <h3>Groups</h3>
-                                            </li>
+                                            </li>-->
                                             <li ng-repeat="group in groups" ng-if="$index <5">
                                                 <a href="#" ui-sref="group-detail({groupId:group._id})" class="iconify">
                                                     <i class="fa fa-{{group.icon}}"></i> {{group.name}} </a>
                                             </li>
                                             <li>
-                                                <a href="#" ui-sref="group" class="iconify">View All</a>
+                                                <a href="#" ui-sref="group" class="iconify"><i class="fa fa-user"></i>View All</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -210,7 +210,9 @@
                         </li>
                     </ul>
                 </li>
-                
+                <li class="">
+                    <a href="#" ng-click="startCreateGroup()">Create Group</a>
+                </li>
             </ul>
         </div>
         <!-- END MEGA MENU -->
