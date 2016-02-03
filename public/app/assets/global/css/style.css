@@ -125,3 +125,23 @@
 .portlet-fullscreen .scroller{
     height: 100% !important;
 }
+
+.logo-header {
+    max-height: 31px;
+    border: 1px solid black;
+    box-shadow: 1px 1px 3px;
+}
+
+.logo-login {
+    height: 196px;
+    width: 196px;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 32px !important;
+    box-shadow: 4px 4px 15px rgba(200,10,10,0.51)
+}
+
+.logo-login img{
+    width:100%;
+    height:100%;
+}

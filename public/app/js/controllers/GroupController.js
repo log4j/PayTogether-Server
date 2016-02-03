@@ -16,6 +16,7 @@ userService,growl,groupService) {
         
     }else{
         $state.go('login');
+        return;
     }
     
     $scope.showDetail = function(group){
