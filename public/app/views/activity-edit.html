@@ -130,7 +130,7 @@
                                         </th>
                                         <th>
                                             <label ng-show="activity.shareByPercentage">{{activity.remainingPercentage}} %</label>
-                                            <label ng-show="!activity.shareByPercentage">$ {{activity.remainingAmount}} </label>
+                                            <label ng-show="!activity.shareByPercentage">$ {{activity.remainingAmount | currency:'':2}} </label>
                                         </th>
                                         <th>
                                             <a class="btn green btn-outline btn-circle btn-sm" ng-click="average()">Average</a>

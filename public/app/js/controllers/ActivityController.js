@@ -116,6 +116,11 @@ userService, optionService, growl, groupService, activityService, $filter) {
             if(!user.amount)
                 user.amount = 0;
                 
+            user.tempPercentage = user.percentage;
+            user.tempAmount = user.amount;
+            user.percentage = parseFloat(user.percentage);
+            user.amount = parseFloat(user.amount);
+                
             if(user.selected){
                 totalSelected ++;
                 
@@ -132,6 +137,12 @@ userService, optionService, growl, groupService, activityService, $filter) {
         
         
        $scope.calculateFinal();
+       
+       for(var i=0;i<$scope.group.users.length;i++){
+            var user = $scope.group.users[i];
+            user.percentage = user.tempPercentage;
+            user.amount = user.tempAmount;
+       }
         //console.log($scope.activity.remainingAmount);
     };
     
