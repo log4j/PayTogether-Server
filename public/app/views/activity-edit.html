@@ -108,7 +108,7 @@
                                         </td>
                                         <td style="padding:3px;">
                                             <div class="input-group input-small no-animate" ng-show="activity.shareByPercentage">
-                                                <input type="number" step="any" ng-model="user.percentage" ng-change="summary()" class="no-animate form-control" placeholder="99">
+                                                <input type="text" step="any" ng-model="user.percentage" ng-change="summary()" class="no-animate form-control" placeholder="99">
                                                 <span class="no-animate input-group-addon">
                                                     %
                                                 </span>
@@ -117,7 +117,7 @@
                                                 <span class="no-animate input-group-addon">
                                                     $
                                                 </span>
-                                                <input type="number" step="any" ng-model="user.amount" ng-change="summary()" class="no-animate form-control" placeholder="123.45">                                        
+                                                <input type="text" step="any" ng-model="user.amount" ng-change="summary()" class="no-animate form-control" placeholder="123.45">                                        
                                             </div>
                                         </td>
                                         <td> {{user.finalAmount|currency:'$':2}} </td>
