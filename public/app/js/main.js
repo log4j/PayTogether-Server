@@ -183,7 +183,7 @@ initialization can be disabled and Layout.init() should be called on page load c
 /* Setup Rounting For All Pages */
 MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
     // Redirect any unmatched url
-    $urlRouterProvider.otherwise("/group");  
+    $urlRouterProvider.otherwise("/login");  
     
     $stateProvider
     
