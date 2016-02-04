@@ -3,7 +3,7 @@
  */
 
 var config = {
-	website_name: 'RentFerence',
+	website_name: 'Pay Together',
 	description: 'Make our life easier!',
 	site_static_host: '',
 	port: 80,
