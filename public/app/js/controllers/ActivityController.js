@@ -216,8 +216,8 @@ userService, optionService, growl, groupService, activityService, $filter) {
             growl.addWarnMessage('Please select a member.');
         }
         
-        if(($scope.activity.shareByPercentage&&$scope.activity.remainingPercentage!=0)
-        ||(!$scope.activity.shareByPercentage&&$scope.activity.remainingAmount!=0)){
+        if(($scope.activity.shareByPercentage&&$scope.activity.remainingPercentage>=0.005)
+        ||(!$scope.activity.shareByPercentage&&$scope.activity.remainingAmount>=0.005)){
             error = true;
             $scope.errors.remaining = true;
             growl.addWarnMessage('Please make sure there is no remaining.');
