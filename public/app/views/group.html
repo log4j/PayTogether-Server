@@ -24,10 +24,12 @@
         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12"
         ng-repeat="group in groups">
             <div class="dashboard-stat {{group.color}}">
+                <div class="more group-infor"><i class="fa fa-users"></i> {{group.users.length}}  <i class="fa fa-tags" style="margin-left:10px;"></i> {{group.userSpent | currency:'$':2}} (You spent)</div>
                 <div class="visual">
                     <i class="fa fa-{{group.icon}}"></i>
                 </div>
                 <div class="details">
+                    
                     <div class="number"> {{group.name}} </div>
                     <div class="desc" ng-show="group.userOwned==0"> You do not owe anything </div>
                     <div class="desc" ng-show="group.userOwned<0"> You are owed <strong class="">{{-group.userOwned | currency:'$':2}}</strong> </div>
@@ -42,7 +44,11 @@
         
         
         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-            <div class="dashboard-stat yellow-soft">
+            <div class="dashboard-stat yellow-soft" ng-click="startCreateGroup()" style="cursor:pointer;">
+                <div class="more group-infor">
+                  &nbsp;  <!--<i class="fa fa-users"></i> {{group.users.length}}  <i class="fa fa-tags" style="margin-left:10px;"></i> {{group.userSpent | currency:'$':2}} (You spent)-->
+                </div>
+                
                 <div class="visual">
                     <i class="fa fa-plus"></i>
                 </div>
@@ -50,7 +56,7 @@
                     <div class="number"> Create New </div>
                     <div class="desc"> With friends </div>
                 </div>
-                <a class="more" href="#" ng-click="startCreateGroup()"> Create
+                <a class="more" href="#" > Create
                     <i class="m-icon-swapright m-icon-white"></i>
                 </a>
             </div>
