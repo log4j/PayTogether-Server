@@ -12,19 +12,20 @@ var passport = require('passport');
 
 var multer = require('multer');
 var upload = multer({ dest: './public/upload' });
+var noCache = require('connect-nocache')();
 
 
 
 module.exports = function (app) {
 
 
-    app.post('/login', userRoute.login);
-    app.post('/user', userRoute.createUser);
-    app.get('/user', userRoute.getUserList);
-    app.get('/user/:id', userRoute.getUser);
-    app.put('/user/:id', userRoute.updateUser);
+    app.post('/login', noCache,userRoute.login);
+    app.post('/user', noCache,userRoute.createUser);
+    app.get('/user', noCache,userRoute.getUserList);
+    app.get('/user/:id', noCache,userRoute.getUser);
+    app.put('/user/:id', noCache,userRoute.updateUser);
 
-    app.post('/avatar', upload.single('avatar'), userRoute.updateAvatar);
+    app.post('/avatar', noCache,upload.single('avatar'), userRoute.updateAvatar);
 
 
     app.get('/', function (req, res) {
@@ -38,8 +39,8 @@ module.exports = function (app) {
     app.get('/init', initRoute.initBasicData);
 
 
-    app.get('/commodity', commodityRoute.getList);
-    app.get('/commodity/:id', commodityRoute.getItem);
+    app.get('/commodity', noCache, commodityRoute.getList);
+    app.get('/commodity/:id', noCache, commodityRoute.getItem);
 
 
     app.get('/cart', cartRoute.getList);
@@ -52,18 +53,18 @@ module.exports = function (app) {
     app.put('/activity/:id', activityRoute.updateItem);
     app.delete('/activity/:id', activityRoute.deleteItem);
     
-    app.get('/group', groupRoute.getList);
-    app.get('/group/:id', groupRoute.getItem);
-    app.post('/group', groupRoute.createItem);
-    app.put('/group/:id', groupRoute.updateItem);
-    app.delete('/group/:id', groupRoute.deleteItem);
+    app.get('/group', noCache,groupRoute.getList);
+    app.get('/group/:id', noCache,groupRoute.getItem);
+    app.post('/group', noCache,groupRoute.createItem);
+    app.put('/group/:id', noCache,groupRoute.updateItem);
+    app.delete('/group/:id', noCache,groupRoute.deleteItem);
 
 
-    app.get('/order', orderRoute.getList);
-    app.post('/order', orderRoute.createItem);
-    app.put('/order/:id', orderRoute.updateItem);
-    app.get('/order/:id', orderRoute.getItem);
-    app.delete('/order/:id', orderRoute.deleteItem);
+    app.get('/order', noCache,orderRoute.getList);
+    app.post('/order', noCache,orderRoute.createItem);
+    app.put('/order/:id', noCache,orderRoute.updateItem);
+    app.get('/order/:id', noCache,orderRoute.getItem);
+    app.delete('/order/:id', noCache,orderRoute.deleteItem);
 
 
 
