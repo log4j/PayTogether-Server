@@ -179,10 +179,10 @@
         <!-- DOC: Remove dropdown-menu-hover and data-close-others="true" attributes below to disable the dropdown opening on mouse hover -->
         <div class="hor-menu" >
             <ul class="nav navbar-nav">
-                <!--<li class="active">
-                    <a href="#" ui-sref="dashboard">Dashboard</a>
-                </li>-->
-                <li class="menu-dropdown mega-menu-dropdown ">
+                <li class="active" ng-if="$state.current.data.loginMenuOnly">
+                    <a href="#" ui-sref="login">Join Us</a>
+                </li>
+                <li class="menu-dropdown mega-menu-dropdown "  ng-if="!$state.current.data.loginMenuOnly">
                     <a data-hover="megamenu-dropdown" ui-sref="group" data-close-others="true" data-toggle="dropdown" href="#" class="dropdown-toggle"> Groups
                         <i class="fa fa-angle-down"></i>
                     </a>
@@ -210,7 +210,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="">
+                <li class=""  ng-if="!$state.current.data.loginMenuOnly">
                     <a href="#" ng-click="startCreateGroup()">Create Group</a>
                 </li>
             </ul>

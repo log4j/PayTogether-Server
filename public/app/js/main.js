@@ -183,10 +183,16 @@ initialization can be disabled and Layout.init() should be called on page load c
 /* Setup Rounting For All Pages */
 MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
     // Redirect any unmatched url
-    $urlRouterProvider.otherwise("/login");  
+    // $urlRouterProvider.otherwise("/welcome"); 
+    $urlRouterProvider.otherwise(function ($injector, $location) {
+        var $state = $injector.get('$state');
+
+        $state.go('welcome', {
+            fromRedirect: true
+        });
+    }); 
     
     $stateProvider
-    
         .state('login', {
             url : "/login",
             templateUrl : "views/login.html",
@@ -216,7 +222,7 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         .state('welcome', {
             url : "/welcome",
             templateUrl : "views/welcome.html",
-            data: {pageTitle:'Welcome',contentOnly:false,noPageHead:true,noHeader:false,noPageHeaderMenu:true,bodyStyle:'login'},
+            data: {pageTitle:'Welcome',contentOnly:false,noPageHead:true,noHeader:false,loginMenuOnly:true,bodyStyle:'welcome'},
             controller : "WelcomeController",
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
@@ -228,7 +234,8 @@ MetronicApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                         ] 
                     });
                 }]
-            }
+            },
+            params :{fromRedirect:false}
         })
         
         // Dashboard

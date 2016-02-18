@@ -150,6 +150,14 @@ MetronicApp.controller('AlertController', function($scope, content, options, typ
 });
 
 
-MetronicApp.controller('WelcomeController', function($scope) {
-    console.log("hahaha");
+MetronicApp.controller('WelcomeController', function($scope, $state, $stateParams, userService) {
+    // console.log("hahaha",$stateParams);
+    
+    //check user logged already?
+    if($stateParams.fromRedirect)	
+        if(userService.getStoredUser()){
+            $state.go('group');
+        }
+    
+    
 });
