@@ -39,7 +39,7 @@ alertService, groupService) {
             if(result){
                 userService.logout()
                 .then(function(res){
-                    $state.go('login');
+                    $state.go('welcome');
                 });
             }
         });
